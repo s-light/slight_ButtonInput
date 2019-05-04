@@ -1,10 +1,10 @@
-/**************************************************************************************************
+/******************************************
     slight_Button Library
         for more information changelog / history see slight_Button.cpp
     written by stefan krueger (s-light),
-        stefan@s-light.eu, http://s-light.eu, https://github.com/s-light/
-**************************************************************************************************/
-/**************************************************************************************************
+        git@s-light.eu, http://s-light.eu, https://github.com/s-light/
+******************************************/
+/******************************************
     license
     CC BY SA
         This work is licensed under the
@@ -43,7 +43,7 @@
         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         http://opensource.org/licenses/mit-license.php
 
-**************************************************************************************************/
+******************************************/
 
 //Check if this class is already there or if it must be created...
 #ifndef slight_ButtonInput_h
