@@ -1,44 +1,12 @@
-#ifdef debug__slight_ButtonInput
-void print_info(Print &out) {
-    out.println();
-    //             "|~~~~~~~~~|~~~~~~~~~|~~~..~~~|~~~~~~~~~|~~~~~~~~~|"
-    out.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
-    out.println(F("|                       ^ ^                      |"));
-    out.println(F("|                      (0,0)                     |"));
-    out.println(F("|                      ( _ )                     |"));
-    out.println(F("|                       \" \"                      |"));
-    out.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
-    out.println(F("| slight_ButtonInput.cpp"));
-    out.println(F("|   library for Button Input system"));
-    out.println(F("|"));
-    out.println(F("| dream on & have fun :-)"));
-    out.println(F("|"));
-    out.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
-    out.println(F("|"));
-    //out.println(F("| Version: Nov 11 2013  20:35:04"));
-    out.print(F("| version: "));
-    out.print(F(__DATE__));
-    out.print(F("  "));
-    out.print(F(__TIME__));
-    out.println();
-    out.println(F("|"));
-    out.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
-    out.println();
 
-    //out.println(__DATE__); Nov 12 2013
-    //out.println(__TIME__); 20:35:04
-}
-#endif
 /******************************************
-
     slight_ButtonInput
-        slight_ButtonInput as event based system
+        get button input as events
 
     written by stefan krueger (s-light),
         git@s-light.eu, http://s-light.eu, https://github.com/s-light/
 
-
-    changelog / history
+    old history (newer things are in git commits.)
         12.11.2013 17:18 created.
         12.11.2013 20:48 finished. system is working!
         13.11.2013 18:00 added ID
@@ -48,54 +16,49 @@ void print_info(Print &out) {
         15.03.2014 15:55 changed to event system with Instance callback
         15.03.2014 22:48 redesigned events: click events are generated after a event_Up.
         15.03.2014 22:48 added event_ClickTriple, event_ClickMulti, event_holddown
-
-
-    TO DO:
-        ~ test robustness
-
-
 *******************************************/
+
 /******************************************
-    license
+license
 
-    CC BY SA
-        This work is licensed under the
-        Creative Commons Attribution-ShareAlike 3.0 Unported License.
-        To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.
+------------------------------------------
+Apache License Version 2.0
+Copyright 2019 Stefan Krueger
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-    Apache License Version 2.0
-        Copyright 2014 Stefan Krueger
+http://www.apache.org/licenses/LICENSE-2.0
 
-        Licensed under the Apache License, Version 2.0 (the "License");
-        you may not use this file except in compliance with the License.
-        You may obtain a copy of the License at
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
-        http://www.apache.org/licenses/LICENSE-2.0
+------------------------------------------
+The MIT License (MIT)
 
-        Unless required by applicable law or agreed to in writing, software
-        distributed under the License is distributed on an "AS IS" BASIS,
-        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-        See the License for the specific language governing permissions and
-        limitations under the License.
+Copyright 2019 Stefan Krüger
 
-    The MIT License (MIT)
-        Copyright (c) 2014 stefan krueger
-        Permission is hereby granted, free of charge, to any person obtaining a copy
-        of this software and associated documentation files (the "Software"),
-        to deal in the Software without restriction, including without limitation
-        the rights to use, copy, modify, merge, publish, distribute, sublicense,
-        and/or sell copies of the Software, and to permit persons to whom the Software
-        is furnished to do so, subject to the following conditions:
-        The above copyright notice and this permission notice shall be included in all
-        copies or substantial portions of the Software.
-        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-        INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-        PARTICULAR PURPOSE AND NONINFRINGEMENT.
-        IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES
-        OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-        http://opensource.org/licenses/mit-license.php
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+https://opensource.org/licenses/mit-license.php
 ******************************************/
 
 /** Serial.print to Flash: Notepad++ Replace RegEx
