@@ -1,3 +1,6 @@
+# arduino IDE build
+build
+
 # Notepad++ backups
 *.bak
 **/nppBackup

@@ -133,15 +133,15 @@ slight_ButtonInput::slight_ButtonInput(
     const uint16_t cwDuration_ClickLong_New,
     const uint16_t cwDuration_ClickDouble_New
 ) :
-    cbID                    ( cbID_New ),
-    cbfCallbackOnEvent        ( cbfCallbackOnEvent_New),
-    cbPin                    ( cbPin_New ),
-    cbfuncGetInput            ( cbfuncGetInput_New ),
-    cwDuration_Debounce        ( cwDuration_Debounce_New ),
-    cwDuration_HoldingDown    ( cwDuration_HoldingDown_New ),
-    cwDuration_ClickSingle    ( cwDuration_ClickSingle_New ),
-    cwDuration_ClickLong    ( cwDuration_ClickLong_New ),
-    cwDuration_ClickDouble    ( cwDuration_ClickDouble_New )
+    cbID(cbID_New),
+    cbfCallbackOnEvent(cbfCallbackOnEvent_New),
+    cbPin(cbPin_New),
+    cbfuncGetInput(cbfuncGetInput_New),
+    cwDuration_Debounce(cwDuration_Debounce_New),
+    cwDuration_HoldingDown(cwDuration_HoldingDown_New),
+    cwDuration_ClickSingle(cwDuration_ClickSingle_New),
+    cwDuration_ClickLong(cwDuration_ClickLong_New),
+    cwDuration_ClickDouble(cwDuration_ClickDouble_New)
 {
     //do some internal inits
 
