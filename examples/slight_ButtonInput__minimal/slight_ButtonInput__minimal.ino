@@ -44,11 +44,14 @@ https://opensource.org/licenses/mit-license.php
 #include <slight_ButtonInput.h>
 
 
-slight_ButtonInput mybutton(
+// using default values:
+slight_ButtonInput mybutton1(1, A0, mybutton_get_input, mybutton_event);
+
+slight_ButtonInput mybutton2(
     // byte cbID_New
-    42,
+    2,
     // byte cbPin_New,
-    A0,
+    A1,
     // tCbfuncGetInput cbfuncGetInput_New,
     mybutton_get_input,
     // tcbfOnEvent cbfCallbackOnEvent_New,
@@ -64,8 +67,6 @@ slight_ButtonInput mybutton(
     // const uint16_t cwDuration_ClickDouble_New = 1000
      500
 );
-// using default values:
-//slight_ButtonInput mybutton(42, A3, mybutton_get_input, mybutton_event, 50, 3000);
 
 
 
@@ -79,14 +80,14 @@ boolean mybutton_get_input(byte id, byte pin) {
 
 
 void mybutton_event(slight_ButtonInput *instance, byte event) {
-    // Serial.print(F("Instance ID:"));
-    // Serial.println((*instance).getID());
+    Serial.print(F("Instance ID:"));
+    Serial.println((*instance).getID());
 
     Serial.print(F("Event: "));
     (*instance).printEvent(Serial, event);
     Serial.println();
 
-    // show event additional infos:
+    // react on event
     switch (event) {
         case slight_ButtonInput::event_StateChanged : {
             Serial.print(F("\t state: "));
@@ -120,7 +121,6 @@ void mybutton_event(slight_ButtonInput *instance, byte event) {
             Serial.println((*instance).getClickCount());
         } break;
     } //end switch
-
 }
 
 
@@ -128,15 +128,13 @@ void mybutton_event(slight_ButtonInput *instance, byte event) {
 // setup
 // ------------------------------------------
 void setup() {
-
     // ------------------------------------------
     // init serial
-
-        //wait for arduino IDE to release all serial ports after upload.
-        delay(1000);
-        Serial.begin(115200);
-        delay(500);
-        Serial.println();
+    // wait for arduino IDE to release all serial ports after upload.
+    delay(1000);
+    Serial.begin(115200);
+    delay(500);
+    Serial.println();
 
     // ------------------------------------------
     // print short welcome text
@@ -145,33 +143,28 @@ void setup() {
 
     // ------------------------------------------
     // start slight_ButtonInput
-
-        Serial.println(F("setup slight_ButtonInput:"));
-        {
-            Serial.println(F("  pinMode INPUT_PULLUP"));
-            pinMode(mybutton.getPin(), INPUT_PULLUP);
-
-            Serial.println(F("  mybutton.begin();"));
-            mybutton.begin();
-
-        }
-        Serial.println(F("  finished."));
-
+    Serial.println(F("setup slight_ButtonInput:")); {
+        Serial.println(F("  pinMode INPUT_PULLUP"));
+        pinMode(mybutton1.getPin(), INPUT_PULLUP);
+        pinMode(mybutton2.getPin(), INPUT_PULLUP);
+        Serial.println(F("  mybutton.begin();"));
+        mybutton1.begin();
+        mybutton2.begin();
+    }
+    Serial.println(F("  finished."));
 
     // ------------------------------------------
     Serial.println(F("Loop:"));
-
 }
-// end setup
 
 
 // ------------------------------------------
 // main loop
 // ------------------------------------------
 void loop() {
-
-    mybutton.update();
-
+    mybutton1.update();
+    mybutton2.update();
+    // nothing else to do here...
 }
 
 

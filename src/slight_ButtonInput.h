@@ -72,25 +72,25 @@ class slight_ButtonInput {
         // public definitions:
 
             // init
-            static const byte event_NoEvent                =  0;
+            static const byte event_NoEvent =  0;
 
             // State
-            static const byte event_StateChanged        = 10;
+            static const byte event_StateChanged = 10;
 
-            static const byte state_NotValid            = 11;
-            static const byte state_Standby                = 12;
-            static const byte state_Active                = 13;
-            static const byte state_Debouncing            = 14;
+            static const byte state_NotValid = 11;
+            static const byte state_Standby = 12;
+            static const byte state_Active = 13;
+            static const byte state_Debouncing = 14;
 
             // Click
-            static const byte event_Down                = 20;
-            static const byte event_Up                    = 21;
-            static const byte event_HoldingDown            = 22;
-            static const byte event_Click                = 30;
-            static const byte event_ClickLong            = 31;
-            static const byte event_ClickDouble            = 32;
-            static const byte event_ClickTriple            = 33;
-            static const byte event_ClickMulti            = 34;
+            static const byte event_Down = 20;
+            static const byte event_Up = 21;
+            static const byte event_HoldingDown = 22;
+            static const byte event_Click = 30;
+            static const byte event_ClickLong = 31;
+            static const byte event_ClickDouble = 32;
+            static const byte event_ClickTriple = 33;
+            static const byte event_ClickMulti = 34;
 
 
 
