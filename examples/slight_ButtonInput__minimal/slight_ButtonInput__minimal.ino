@@ -44,27 +44,15 @@ https://opensource.org/licenses/mit-license.php
 #include <slight_ButtonInput.h>
 
 
-/*slight_ButtonInput(
-    byte cbID_New,
-    byte cbPin_New,
-    tCbfuncGetInput cbfuncGetInput_New,
-    tcbfOnEvent cbfCallbackOnEvent_New,
-    const uint16_t cwDuration_Debounce_New = 30,
-    const uint16_t cwDuration_HoldingDown_New = 1000,
-    const uint16_t cwDuration_ClickSingle_New = 50,
-    const uint16_t cwDuration_ClickLong_New = 3000,
-    const uint16_t cwDuration_ClickDouble_New = 1000
-);
-*/
-slight_ButtonInput myButtonLeft(
+slight_ButtonInput mybutton(
     // byte cbID_New
     42,
     // byte cbPin_New,
-    A2,
+    A0,
     // tCbfuncGetInput cbfuncGetInput_New,
-    myInputLeft_callback_GetInput,
+    mybutton_get_input,
     // tcbfOnEvent cbfCallbackOnEvent_New,
-    myCallback_onEvent,
+    mybutton_event,
     // const uint16_t cwDuration_Debounce_New = 30,
       30,
     // const uint16_t cwDuration_HoldingDown_New = 1000,
@@ -77,34 +65,32 @@ slight_ButtonInput myButtonLeft(
      500
 );
 // using default values:
-//slight_ButtonInput myButtonLeft(42, A3, myInputLeft_callback_GetInput, myCallback_onEvent, 50, 3000);
+//slight_ButtonInput mybutton(42, A3, mybutton_get_input, mybutton_event, 50, 3000);
 
 
 
-// ******************************************
+// ------------------------------------------
 // slight_ButtonInput functions
 
-boolean myInputLeft_callback_GetInput(byte bID, byte bPin) {
-    // read input invert reading - button closes to GND.
-    // check HWB
-    return ! (PINE & B00000100);
-    //return ! digitalRead(bPin);
+boolean mybutton_get_input(byte id, byte pin) {
+    // read input + invert: button closes to GND.
+    return !digitalRead(pin);
 }
 
 
-void myCallback_onEvent(slight_ButtonInput *pInstance, byte bEvent) {
+void mybutton_event(slight_ButtonInput *instance, byte event) {
     // Serial.print(F("Instance ID:"));
-    // Serial.println((*pInstance).getID());
+    // Serial.println((*instance).getID());
 
     Serial.print(F("Event: "));
-    (*pInstance).printEvent(Serial, bEvent);
+    (*instance).printEvent(Serial, event);
     Serial.println();
 
     // show event additional infos:
-    switch (bEvent) {
+    switch (event) {
         case slight_ButtonInput::event_StateChanged : {
             Serial.print(F("\t state: "));
-            (*pInstance).printState(Serial);
+            (*instance).printState(Serial);
             Serial.println();
         } break;
         case slight_ButtonInput::event_Down : {
@@ -112,7 +98,7 @@ void myCallback_onEvent(slight_ButtonInput *pInstance, byte bEvent) {
         } break;
         case slight_ButtonInput::event_HoldingDown : {
             Serial.print(F("duration active: "));
-            Serial.println((*pInstance).getDurationActive());
+            Serial.println((*instance).getDurationActive());
         } break;
         case slight_ButtonInput::event_Up : {
             Serial.print(F("up"));
@@ -131,7 +117,7 @@ void myCallback_onEvent(slight_ButtonInput *pInstance, byte bEvent) {
         } break;
         case slight_ButtonInput::event_ClickMulti : {
             Serial.print(F("click count: "));
-            Serial.println((*pInstance).getClickCount());
+            Serial.println((*instance).getClickCount());
         } break;
     } //end switch
 
@@ -163,10 +149,10 @@ void setup() {
         Serial.println(F("setup slight_ButtonInput:"));
         {
             Serial.println(F("  pinMode INPUT_PULLUP"));
-            pinMode(myButtonLeft.getPin(), INPUT_PULLUP);
+            pinMode(mybutton.getPin(), INPUT_PULLUP);
 
-            Serial.println(F("  myButtonLeft.begin();"));
-            myButtonLeft.begin();
+            Serial.println(F("  mybutton.begin();"));
+            mybutton.begin();
 
         }
         Serial.println(F("  finished."));
@@ -184,7 +170,7 @@ void setup() {
 // ------------------------------------------
 void loop() {
 
-    myButtonLeft.update();
+    mybutton.update();
 
 }
 
