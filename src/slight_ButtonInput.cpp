@@ -1,32 +1,32 @@
 #ifdef debug__slight_ButtonInput
-void print_info(Print &pOut) {
-    pOut.println();
+void print_info(Print &out) {
+    out.println();
     //             "|~~~~~~~~~|~~~~~~~~~|~~~..~~~|~~~~~~~~~|~~~~~~~~~|"
-    pOut.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
-    pOut.println(F("|                       ^ ^                      |"));
-    pOut.println(F("|                      (0,0)                     |"));
-    pOut.println(F("|                      ( _ )                     |"));
-    pOut.println(F("|                       \" \"                      |"));
-    pOut.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
-    pOut.println(F("| slight_ButtonInput.cpp"));
-    pOut.println(F("|   library for Button Input system"));
-    pOut.println(F("|"));
-    pOut.println(F("| dream on & have fun :-)"));
-    pOut.println(F("|"));
-    pOut.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
-    pOut.println(F("|"));
-    //pOut.println(F("| Version: Nov 11 2013  20:35:04"));
-    pOut.print(F("| version: "));
-    pOut.print(F(__DATE__));
-    pOut.print(F("  "));
-    pOut.print(F(__TIME__));
-    pOut.println();
-    pOut.println(F("|"));
-    pOut.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
-    pOut.println();
+    out.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
+    out.println(F("|                       ^ ^                      |"));
+    out.println(F("|                      (0,0)                     |"));
+    out.println(F("|                      ( _ )                     |"));
+    out.println(F("|                       \" \"                      |"));
+    out.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
+    out.println(F("| slight_ButtonInput.cpp"));
+    out.println(F("|   library for Button Input system"));
+    out.println(F("|"));
+    out.println(F("| dream on & have fun :-)"));
+    out.println(F("|"));
+    out.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
+    out.println(F("|"));
+    //out.println(F("| Version: Nov 11 2013  20:35:04"));
+    out.print(F("| version: "));
+    out.print(F(__DATE__));
+    out.print(F("  "));
+    out.print(F(__TIME__));
+    out.println();
+    out.println(F("|"));
+    out.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
+    out.println();
 
-    //pOut.println(__DATE__); Nov 12 2013
-    //pOut.println(__TIME__); 20:35:04
+    //out.println(__DATE__); Nov 12 2013
+    //out.println(__TIME__); 20:35:04
 }
 #endif
 /******************************************
@@ -44,10 +44,10 @@ void print_info(Print &pOut) {
         13.11.2013 18:00 added ID
         10.01.2014 09:29 changed name to slight_ButtonInput
         10.01.2014 20:51 added Double Click detection
-        11.01.2014 00:59 added printState(Print &pOut) function
+        11.01.2014 00:59 added printState(Print &out) function
         15.03.2014 15:55 changed to event system with Instance callback
         15.03.2014 22:48 redesigned events: click events are generated after a event_Up.
-        15.03.2014 22:48 added event_ClickTriple, event_ClickMulti, event_HoldingDown
+        15.03.2014 22:48 added event_ClickTriple, event_ClickMulti, event_holddown
 
 
     TO DO:
@@ -123,41 +123,41 @@ void print_info(Print &pOut) {
 /** Constructor **/
 // initialize const http://forum.arduino.cc/index.php?topic=188261.msg1393390#msg1393390
 slight_ButtonInput::slight_ButtonInput(
-    byte cbID_New,
-    byte cbPin_New,
-    tCbfuncGetInput cbfuncGetInput_New,
-    tcbfOnEvent cbfCallbackOnEvent_New,
-    const uint16_t cwDuration_Debounce_New,
-    const uint16_t cwDuration_HoldingDown_New,
-    const uint16_t cwDuration_ClickSingle_New,
-    const uint16_t cwDuration_ClickLong_New,
-    const uint16_t cwDuration_ClickDouble_New
+    byte id_new,
+    byte pin_new,
+    tCbfuncGetInput cbfuncGetInput_new,
+    tcbfOnEvent cbfCallbackOnEvent_new,
+    const uint16_t duration_debounce_new,
+    const uint16_t duration_holddown_new,
+    const uint16_t duration_click_single_new,
+    const uint16_t duration_click_long_new,
+    const uint16_t duration_click_double_new
 ) :
-    cbID(cbID_New),
-    cbfCallbackOnEvent(cbfCallbackOnEvent_New),
-    cbPin(cbPin_New),
-    cbfuncGetInput(cbfuncGetInput_New),
-    cwDuration_Debounce(cwDuration_Debounce_New),
-    cwDuration_HoldingDown(cwDuration_HoldingDown_New),
-    cwDuration_ClickSingle(cwDuration_ClickSingle_New),
-    cwDuration_ClickLong(cwDuration_ClickLong_New),
-    cwDuration_ClickDouble(cwDuration_ClickDouble_New)
+    id(id_new),
+    cbfCallbackOnEvent(cbfCallbackOnEvent_new),
+    pin(pin_new),
+    cbfuncGetInput(cbfuncGetInput_new),
+    duration_debounce(duration_debounce_new),
+    duration_holddown(duration_holddown_new),
+    duration_click_single(duration_click_single_new),
+    duration_click_long(duration_click_long_new),
+    duration_click_double(duration_click_double_new)
 {
     //do some internal inits
 
-    ulTimeStamp_LastActivity        = 0;
-    ulTimeStamp_LastRelease            = 0;
-    ulTimeStamp_LastHoldDownEvent    = 0;
+    timestamp_last_activity        = 0;
+    timestamp_last_release            = 0;
+    timestamp_last_holddown_event    = 0;
 
-    bClick_Count = 0;
+    click_count = 0;
 
-    bEvent        = event_NoEvent;
-    bEventLast    = event_NoEvent;
+    event        = event_NoEvent;
+    event_last    = event_NoEvent;
 
-    bEnabled = false;
+    enabled = false;
 
-    bState = state_NotValid;
-    bReady = false;
+    state = state_NotValid;
+    ready = false;
 }
 
 // Destructor
@@ -167,7 +167,7 @@ slight_ButtonInput::~slight_ButtonInput() {
 
 // begin (activate object/instance)
 void slight_ButtonInput::begin() {
-    if (bReady == false) {
+    if (ready == false) {
         #ifdef debug_slight_ButtonInput
             Serial.println(F("***************************************************************"));
             Serial.println(F("** Welcome to slight_ButtonInput library       initialise... **"));
@@ -175,16 +175,16 @@ void slight_ButtonInput::begin() {
             Serial.println(F("slight_ButtonInput::begin: "));
         #endif
 
-        ulTimeStamp_LastActivity        = millis();
-        ulTimeStamp_LastRelease            = millis();
-        ulTimeStamp_LastHoldDownEvent    = millis();
+        timestamp_last_activity        = millis();
+        timestamp_last_release            = millis();
+        timestamp_last_holddown_event    = millis();
 
-        bEvent        = event_NoEvent;
-        bEventLast    = event_NoEvent;
-        bState        = state_Standby;
-        bEnabled    = true;
+        event        = event_NoEvent;
+        event_last    = event_NoEvent;
+        state        = state_Standby;
+        enabled    = true;
 
-        bReady        = true;
+        ready        = true;
     }
 }
 
@@ -197,85 +197,85 @@ void slight_ButtonInput::begin() {
 // should be called at least one time per main loop
 // returns state
 byte slight_ButtonInput::update() {
-    byte bStateTemp = state_NotValid;
-    if (bReady == true) {
-        // if system is bEnabled
-        if (bEnabled == true) {
+    byte state_temp = state_NotValid;
+    if (ready == true) {
+        // if system is enabled
+        if (enabled == true) {
             #ifdef debug_slight_ButtonInput
                 //Serial.println(F("slight_ButtonInput::update():"));
             #endif
 
             // read input with callbackfunction
-            boolean bInputRawActive = cbfuncGetInput(cbID, cbPin);
+            boolean bInputRawActive = cbfuncGetInput(id, pin);
 
             if ( bInputRawActive == true) {
-                if ( bState == state_Standby ) {
+                if ( state == state_Standby ) {
                     // start debouncing
-                    ulTimeStamp_LastActivity = millis();
-                    bStateTemp = state_Debouncing;
+                    timestamp_last_activity = millis();
+                    state_temp = state_Debouncing;
                     #ifdef debug_slight_ButtonInput
                         Serial.println(F("slight_ButtonInput::update():"));
                         Serial.println(F("\t started debouncing."));
-                        Serial.print  (F("\t   bState:"));
-                        Serial.println(bState);
-                        Serial.print  (F("\t   bStateTemp:"));
-                        Serial.println(bStateTemp);
+                        Serial.print  (F("\t   state:"));
+                        Serial.println(state);
+                        Serial.print  (F("\t   state_temp:"));
+                        Serial.println(state_temp);
                     #endif
                 } else {
                     // system is debouncing or active
                     // so new default state is current state
-                    bStateTemp = bState;
+                    state_temp = state;
 
                     // calc duration
-                    unsigned long ulLastDuration = ( millis() - ulTimeStamp_LastActivity );
+                    unsigned long ulLastDuration = ( millis() - timestamp_last_activity );
 
                     // check state:
-                    if ( (bState == state_Debouncing ) && ( ulLastDuration > cwDuration_Debounce ) ) {
+                    if ( (state == state_Debouncing ) && ( ulLastDuration > duration_debounce ) ) {
                         // set system to 'active'
-                        ulTimeStamp_LastActivity = millis();
-                        ulTimeStamp_LastHoldDownEvent = millis();
-                        bStateTemp = state_Active;
+                        timestamp_last_activity = millis();
+                        timestamp_last_holddown_event = millis();
+                        state_temp = state_Active;
                         generateEvent(event_Down);
-                    } else if (bState == state_Active) {
+                    } else if (state == state_Active) {
                         // check for HoldingDown event
-                        ulDuration_Active = ulLastDuration;
-                        unsigned long ulActiveDuration = ( millis() - ulTimeStamp_LastHoldDownEvent );
-                        if( ulActiveDuration > cwDuration_HoldingDown ) {
-                            ulTimeStamp_LastHoldDownEvent = millis();
-                            generateEvent(event_HoldingDown);
+                        duration_Active = ulLastDuration;
+                        unsigned long ulActiveDuration = ( millis() - timestamp_last_holddown_event );
+                        if( ulActiveDuration > duration_holddown ) {
+                            timestamp_last_holddown_event = millis();
+                            generateEvent(event_holddown);
                         }
                     }
                 }
-            } else if ( ( bInputRawActive == false) && ( bState == state_Active ) ) {
+            } else if ( ( bInputRawActive == false) && ( state == state_Active ) ) {
                 // Button Released
-                ulDuration_Active = ( millis() - ulTimeStamp_LastActivity );
-                //bStateTemp = state_Released;
+                duration_Active = ( millis() - timestamp_last_activity );
+                //state_temp = state_Released;
                 generateEvent(event_Up);
-                bStateTemp = state_Standby;
+                state_temp = state_Standby;
 
                 ////////////////////////////////////////////////////////////////////////////////
                 // generate Click event
                 // check which event to generate (Click, ClickLong, ClickDouble, ClickTriple)
 
                 //check if DoubleClick Time is not over
-                unsigned long ulLastReleaseDuration = ( millis() - ulTimeStamp_LastRelease );
-                if (ulLastReleaseDuration < cwDuration_ClickDouble) {
+                unsigned long ulLastReleaseDuration = ( millis() - timestamp_last_release );
+                if (ulLastReleaseDuration < duration_click_double) {
                     // ClickMulti detected
-                        bClick_Count = bClick_Count + 1;
+                        click_count = click_count + 1;
                     // check for ClickCount:
-                    if (bClick_Count == 2) {
-                        generateEvent(event_ClickDouble);
-                    } else if (bClick_Count == 3) {
+                    if (click_count == 2) {
+                        generateEvent(event_click_double);
+                    } else if (click_count == 3) {
                         generateEvent(event_ClickTriple);
-                    } else if (bClick_Count > 3) {
+                    } else if (click_count > 3) {
                         generateEvent(event_ClickMulti);
                     }
                 } else {
                     // reset ClickMulti
-                        bClick_Count = 1;
+                        click_count = 1;
                     // check for Click or ClickLong
-                    if (ulDuration_Active > cwDuration_ClickLong) {
-                        generateEvent(event_ClickLong);
+                    if (duration_Active > duration_click_long) {
+                        generateEvent(event_click_long);
                     } else {
                         generateEvent(event_Click);
                     }
@@ -283,153 +283,153 @@ byte slight_ButtonInput::update() {
                 ////////////////////////////////////////////////////////////////////////////////
 
                 // reset system
-                ulTimeStamp_LastRelease    = millis();
-                ulTimeStamp_LastActivity = millis();
-                ulTimeStamp_LastHoldDownEvent = millis();
+                timestamp_last_release    = millis();
+                timestamp_last_activity = millis();
+                timestamp_last_holddown_event = millis();
 
             } else {  // means bInputRawActive==false
                 // system is in standby waiting for the next button press.
-                bStateTemp = state_Standby;
+                state_temp = state_Standby;
             } // end if (bInputRawActive == true) else
 
         } else {
             // system is disabled -nothing to do - so its Standby.
-            bStateTemp = state_Standby;
-        } // end if bEnabled
+            state_temp = state_Standby;
+        } // end if enabled
 
         // check if State has Changed.
-        if (bState != bStateTemp) {
-            bState = bStateTemp;
+        if (state != state_temp) {
+            state = state_temp;
             // generate state changed event
             //generateEvent(event_StateChanged);
         }
 
-    } // end if bReady
-    return bState;
+    } // end if ready
+    return state;
 }
 
 
 
 byte slight_ButtonInput::getID() {
-    return cbID;
+    return id;
 };
 
 boolean slight_ButtonInput::isReady() {
-    return bReady;
+    return ready;
 }
 
 
 byte slight_ButtonInput::getState() {
-    return bState;
+    return state;
 };
 
-byte slight_ButtonInput::printState(Print &pOut, byte bStateTemp) {
-    switch (bStateTemp) {
+byte slight_ButtonInput::printState(Print &out, byte state_temp) {
+    switch (state_temp) {
         case slight_ButtonInput::state_Standby : {
-            pOut.print(F("standby"));
+            out.print(F("standby"));
         } break;
         case slight_ButtonInput::state_NotValid : {
-            pOut.print(F("NotValid"));
+            out.print(F("NotValid"));
         } break;
         case slight_ButtonInput::state_Active : {
-            pOut.print(F("active"));
+            out.print(F("active"));
         } break;
         case slight_ButtonInput::state_Debouncing : {
-            pOut.print(F("debouncing"));
+            out.print(F("debouncing"));
         } break;
         default: {
-            pOut.print(F("error: '"));
-            pOut.print(bState);
-            pOut.print(F(" ' is not a know state."));
+            out.print(F("error: '"));
+            out.print(state);
+            out.print(F(" ' is not a know state."));
         }
     } //end switch
-    return bStateTemp;
+    return state_temp;
 };
 
-byte slight_ButtonInput::printState(Print &pOut) {
-    printState(pOut, bState);
-    return bState;
+byte slight_ButtonInput::printState(Print &out) {
+    printState(out, state);
+    return state;
 };
 
 
 byte slight_ButtonInput::getLastEvent() {
-    return bEventLast;
+    return event_last;
 };
 
-byte slight_ButtonInput::printEvent(Print &pOut, byte bEventTemp) {
-    switch (bEventTemp) {
+byte slight_ButtonInput::printEvent(Print &out, byte eventTemp) {
+    switch (eventTemp) {
         case slight_ButtonInput::event_NoEvent : {
-            pOut.print(F("no event"));
+            out.print(F("no event"));
         } break;
 
         case slight_ButtonInput::event_StateChanged : {
-            pOut.print(F("state changed"));
+            out.print(F("state changed"));
         } break;
 
         // click
         case slight_ButtonInput::event_Down : {
-            pOut.print(F("down"));
+            out.print(F("down"));
         } break;
-        case slight_ButtonInput::event_HoldingDown : {
-            pOut.print(F("holding down"));
+        case slight_ButtonInput::event_holddown : {
+            out.print(F("holding down"));
         } break;
         case slight_ButtonInput::event_Up : {
-            pOut.print(F("up"));
+            out.print(F("up"));
         } break;
         case slight_ButtonInput::event_Click : {
-            pOut.print(F("click"));
+            out.print(F("click"));
         } break;
-        case slight_ButtonInput::event_ClickLong : {
-            pOut.print(F("click long"));
+        case slight_ButtonInput::event_click_long : {
+            out.print(F("click long"));
         } break;
-        case slight_ButtonInput::event_ClickDouble : {
-            pOut.print(F("click double"));
+        case slight_ButtonInput::event_click_double : {
+            out.print(F("click double"));
         } break;
         case slight_ButtonInput::event_ClickTriple : {
-            pOut.print(F("click triple"));
+            out.print(F("click triple"));
         } break;
         case slight_ButtonInput::event_ClickMulti : {
-            pOut.print(F("click multi"));
+            out.print(F("click multi"));
         } break;
         default: {
-            pOut.print(F("error: '"));
-            pOut.print(bState);
-            pOut.print(F(" ' is not a know event."));
+            out.print(F("error: '"));
+            out.print(state);
+            out.print(F(" ' is not a know event."));
         }
     } //end switch
-    return bState;
+    return state;
 };
 
-byte slight_ButtonInput::printEventLast(Print &pOut) {
-    printEvent(pOut, bEventLast);
-    return bEventLast;
+byte slight_ButtonInput::printEventLast(Print &out) {
+    printEvent(out, event_last);
+    return event_last;
 };
 
 
 
 
 void slight_ButtonInput::enable() {
-    if (bReady == true) {
-        bEnabled = true;
+    if (ready == true) {
+        enabled = true;
     }
 }
 
 void slight_ButtonInput::disable() {
-    if (bReady == true) {
-        bEnabled = false;
+    if (ready == true) {
+        enabled = false;
     }
 }
 
 byte slight_ButtonInput::getPin() {
-    return cbPin;
+    return pin;
 };
 
 unsigned long slight_ButtonInput::getDurationActive() {
-    return ulDuration_Active;
+    return duration_Active;
 }
 
 byte slight_ButtonInput::getClickCount() {
-    return bClick_Count;
+    return click_count;
 }
 
 
@@ -439,14 +439,14 @@ byte slight_ButtonInput::getClickCount() {
 /******************************************/
 
 
-void slight_ButtonInput::generateEvent(byte bEventNew) {
-    bEvent = bEventNew;
+void slight_ButtonInput::generateEvent(byte event_new) {
+    event = event_new;
     // call event
-    if (bEvent != event_NoEvent) {
-        cbfCallbackOnEvent(this, bEvent);
+    if (event != event_NoEvent) {
+        cbfCallbackOnEvent(this, event);
     }
-    bEventLast = bEvent;
-    bEvent = event_NoEvent;
+    event_last = event;
+    event = event_NoEvent;
 }
 
 

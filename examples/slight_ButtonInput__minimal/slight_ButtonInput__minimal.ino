@@ -48,23 +48,23 @@ https://opensource.org/licenses/mit-license.php
 slight_ButtonInput mybutton1(1, A0, mybutton_get_input, mybutton_event);
 
 slight_ButtonInput mybutton2(
-    // byte cbID_New
+    // byte id_new
     2,
-    // byte cbPin_New,
+    // byte pin_new,
     A1,
-    // tCbfuncGetInput cbfuncGetInput_New,
+    // tCbfuncGetInput cbfuncGetInput_new,
     mybutton_get_input,
-    // tcbfOnEvent cbfCallbackOnEvent_New,
+    // tcbfOnEvent cbfCallbackOnEvent_new,
     mybutton_event,
-    // const uint16_t cwDuration_Debounce_New = 30,
+    // const uint16_t duration_debounce_new = 30,
       30,
-    // const uint16_t cwDuration_HoldingDown_New = 1000,
+    // const uint16_t duration_holddown_new = 1000,
     1000,
-    // const uint16_t cwDuration_ClickSingle_New =   50,
+    // const uint16_t duration_click_single_new =   50,
       50,
-    // const uint16_t cwDuration_ClickLong_New =   3000,
+    // const uint16_t duration_click_long_new =   3000,
     3000,
-    // const uint16_t cwDuration_ClickDouble_New = 1000
+    // const uint16_t duration_click_double_new = 1000
      500
 );
 
@@ -97,7 +97,7 @@ void mybutton_event(slight_ButtonInput *instance, byte event) {
         case slight_ButtonInput::event_Down : {
             Serial.print(F("the button is pressed down! do something.."));
         } break;
-        case slight_ButtonInput::event_HoldingDown : {
+        case slight_ButtonInput::event_holddown : {
             Serial.print(F("duration active: "));
             Serial.println((*instance).getDurationActive());
         } break;
@@ -107,10 +107,10 @@ void mybutton_event(slight_ButtonInput *instance, byte event) {
         case slight_ButtonInput::event_Click : {
             Serial.print(F("click"));
         } break;
-        case slight_ButtonInput::event_ClickLong : {
+        case slight_ButtonInput::event_click_long : {
             Serial.print(F("click long"));
         } break;
-        case slight_ButtonInput::event_ClickDouble : {
+        case slight_ButtonInput::event_click_double : {
             Serial.print(F("click double"));
         } break;
         case slight_ButtonInput::event_ClickTriple : {

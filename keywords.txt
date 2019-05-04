@@ -41,9 +41,9 @@ state_Active	LITERAL1
 state_Debouncing	LITERAL1
 event_Down	LITERAL1
 event_Up	LITERAL1
-event_HoldingDown	LITERAL1
+event_holddown	LITERAL1
 event_Click	LITERAL1
-event_ClickLong	LITERAL1
-event_ClickDouble	LITERAL1
+event_click_long	LITERAL1
+event_click_double	LITERAL1
 event_ClickTriple	LITERAL1
 event_ClickMulti	LITERAL1

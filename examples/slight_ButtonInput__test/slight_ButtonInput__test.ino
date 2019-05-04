@@ -23,8 +23,8 @@
     changelog / history
         12.11.2013 17:33 created.
         13.11.2013 17:41 add object ID
-        15.03.2014 20:24 changed to use new pInstance technique
-        15.03.2014 22:52 added demo for new events (event_ClickTriple, event_ClickMulti, event_HoldingDown)
+        15.03.2014 20:24 changed to use new instance technique
+        15.03.2014 22:52 added demo for new events (event_ClickTriple, event_ClickMulti, event_holddown)
 
 
     TO DO:
@@ -84,37 +84,37 @@
 /******************************************/
 /** info                                                                                         **/
 /******************************************/
-void print_info(Print &pOut) {
-    pOut.println();
+void print_info(Print &out) {
+    out.println();
     //             "|~~~~~~~~~|~~~~~~~~~|~~~..~~~|~~~~~~~~~|~~~~~~~~~|"
-    pOut.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
-    pOut.println(F("|                       ^ ^                      |"));
-    pOut.println(F("|                      (0,0)                     |"));
-    pOut.println(F("|                      ( _ )                     |"));
-    pOut.println(F("|                       \" \"                      |"));
-    pOut.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
-    pOut.println(F("| slight_ButtonInput__test.ino"));
-    pOut.println(F("|   Sketch to test, develop and showcase functions of slight_ButtonInput library"));
-    pOut.println(F("|"));
-    pOut.println(F("| This Sketch has a debug-menu:"));
-    pOut.println(F("| send '?'+Return for help"));
-    pOut.println(F("|"));
-    pOut.println(F("| dream on & have fun :-)"));
-    pOut.println(F("|"));
-    pOut.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
-    pOut.println(F("|"));
-    //pOut.println(F("| Version: Nov 11 2013  20:35:04"));
-    pOut.print(F("| version: "));
-    pOut.print(F(__DATE__));
-    pOut.print(F("  "));
-    pOut.print(F(__TIME__));
-    pOut.println();
-    pOut.println(F("|"));
-    pOut.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
-    pOut.println();
+    out.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
+    out.println(F("|                       ^ ^                      |"));
+    out.println(F("|                      (0,0)                     |"));
+    out.println(F("|                      ( _ )                     |"));
+    out.println(F("|                       \" \"                      |"));
+    out.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
+    out.println(F("| slight_ButtonInput__test.ino"));
+    out.println(F("|   Sketch to test, develop and showcase functions of slight_ButtonInput library"));
+    out.println(F("|"));
+    out.println(F("| This Sketch has a debug-menu:"));
+    out.println(F("| send '?'+Return for help"));
+    out.println(F("|"));
+    out.println(F("| dream on & have fun :-)"));
+    out.println(F("|"));
+    out.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
+    out.println(F("|"));
+    //out.println(F("| Version: Nov 11 2013  20:35:04"));
+    out.print(F("| version: "));
+    out.print(F(__DATE__));
+    out.print(F("  "));
+    out.print(F(__TIME__));
+    out.println();
+    out.println(F("|"));
+    out.println(F("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"));
+    out.println();
 
-    //pOut.println(__DATE__); Nov 11 2013
-    //pOut.println(__TIME__); 20:35:04
+    //out.println(__DATE__); Nov 11 2013
+    //out.println(__TIME__); 20:35:04
 }
 
 
@@ -132,27 +132,27 @@ void print_info(Print &pOut) {
 /**************************************************/
 
 /*slight_ButtonInput(
-    byte cbID_New,
-    byte cbPin_New,
-    tCbfuncGetInput cbfuncGetInput_New,
-    tcbfOnEvent cbfCallbackOnEvent_New,
-    const uint16_t cwDuration_Debounce_New = 30,
-    const uint16_t cwDuration_HoldingDown_New = 1000,
-    const uint16_t cwDuration_ClickSingle_New = 50,
-    const uint16_t cwDuration_ClickLong_New = 3000,
-    const uint16_t cwDuration_ClickDouble_New = 1000
+    byte id_new,
+    byte pin_new,
+    tCbfuncGetInput cbfuncGetInput_new,
+    tcbfOnEvent cbfCallbackOnEvent_new,
+    const uint16_t duration_debounce_new = 30,
+    const uint16_t duration_holddown_new = 1000,
+    const uint16_t duration_click_single_new = 50,
+    const uint16_t duration_click_long_new = 3000,
+    const uint16_t duration_click_double_new = 1000
 );
 */
 slight_ButtonInput myButtonLeft(
-    42,  // byte cbID_New
-    A2,  // byte cbPin_New,
-    myInputLeft_callback_GetInput,  // tCbfuncGetInput cbfuncGetInput_New,
-    myCallback_onEvent,  // tcbfOnEvent cbfCallbackOnEvent_New,
-      30,  // const uint16_t cwDuration_Debounce_New = 30,
-    1000,  // const uint16_t cwDuration_HoldingDown_New = 1000,
-      50,  // const uint16_t cwDuration_ClickSingle_New =   50,
-    3000,  // const uint16_t cwDuration_ClickLong_New =   3000,
-     500   // const uint16_t cwDuration_ClickDouble_New = 1000
+    42,  // byte id_new
+    A2,  // byte pin_new,
+    myInputLeft_callback_GetInput,  // tCbfuncGetInput cbfuncGetInput_new,
+    myCallback_onEvent,  // tcbfOnEvent cbfCallbackOnEvent_new,
+      30,  // const uint16_t duration_debounce_new = 30,
+    1000,  // const uint16_t duration_holddown_new = 1000,
+      50,  // const uint16_t duration_click_single_new =   50,
+    3000,  // const uint16_t duration_click_long_new =   3000,
+     500   // const uint16_t duration_click_double_new = 1000
 );
 // using default values:
 //slight_ButtonInput myButtonLeft(42, A3, myInputLeft_callback_GetInput, myCallback_onEvent, 50, 3000);
@@ -164,7 +164,7 @@ slight_ButtonInput myButtonLeft(
 /******************************************/
 
 boolean bLEDState = 0;
-const byte cbID_LED_Info = 9; //D9
+const byte id_LED_Info = 9; //D9
 
 unsigned long ulDebugOut_LiveSign_TimeStamp_LastAction    = 0;
 const uint16_t cwDebugOut_LiveSign_UpdateInterval            = 1000; //ms
@@ -177,12 +177,12 @@ boolean bDebugOut_LiveSign_LED_Enabled    = 1;
 /**  led and serial debug                        **/
 /**************************************************/
 // myFaderOne output on:
-byte bPin_LED = 9;
+byte pin_LED = 9;
 
 byte bDebugOut_myFaderOne_Output_Enable        = 0;
 
 
-//unsigned long ulTimeStamp_LastAction    = 0;
+//unsigned long timestamp_LastAction    = 0;
 //const uint16_t cwUpdateInterval            = 0; //ms
 
 
@@ -193,9 +193,9 @@ byte bDebugOut_myFaderOne_Output_Enable        = 0;
 /**************************************************/
 
 // a string to hold new data
-char  sMenu_Input_New[]                = "[ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, ]";
+char  sMenu_Input_new[]                = "[ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, ]";
 // flag if string is complete
-boolean bMenu_Input_New_FlagComplete    = false;
+boolean bMenu_Input_new_FlagComplete    = false;
 
 // string for Currently to process Command
 char  sMenu_Command_Current[]        = "[ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, ]";
@@ -327,89 +327,89 @@ uint8_t bMenuMode = cbMenuMode_MainMenu;
 
 
 // SubMenu SetValues
-void handle_SubMenu1(Print &pOut, char *caCommand) {
-    pOut.println(F("SubMenu1:"));
-    pOut.println(F("\t nothing here."));
-    pOut.println(F("\t finished."));
+void handle_SubMenu1(Print &out, char *caCommand) {
+    out.println(F("SubMenu1:"));
+    out.println(F("\t nothing here."));
+    out.println(F("\t finished."));
     // exit submenu
     // reset state manschine of submenu
     // jump to main
     bMenuMode = cbMenuMode_MainMenu;
-    bMenu_Input_New_FlagComplete = true;
+    bMenu_Input_new_FlagComplete = true;
 }
 
 
 // Main Menu
-void handle_MainMenu(Print &pOut, char *caCommand) {
-    /* pOut.print("sCommand: '");
-    pOut.print(sCommand);
-    pOut.println("'"); */
+void handle_MainMenu(Print &out, char *caCommand) {
+    /* out.print("sCommand: '");
+    out.print(sCommand);
+    out.println("'"); */
     switch (caCommand[0]) {
         case 'h':
         case 'H':
         case '?': {
             // help
-            pOut.println(F("____________________________________________________________"));
-            pOut.println();
-            pOut.println(F("Help for Commands:"));
-            pOut.println();
-            pOut.println(F("\t '?': this help"));
-            pOut.println(F("\t 'i': sketch info"));
-            pOut.println(F("\t 'y': toggle DebugOut livesign print"));
-            pOut.println(F("\t 'Y': toggle DebugOut livesign LED"));
-            pOut.println(F("\t 'x': tests"));
-            pOut.println();
-            pOut.println(F("\t 'A': Show 'HelloWorld' "));
-            pOut.println(F("\t 'e': enable input"));
-            pOut.println(F("\t 'E': disable input"));
-            pOut.println();
-            pOut.println(F("\t 'set:' enter SubMenu1"));
-            pOut.println();
-            pOut.println(F("____________________________________________________________"));
+            out.println(F("____________________________________________________________"));
+            out.println();
+            out.println(F("Help for Commands:"));
+            out.println();
+            out.println(F("\t '?': this help"));
+            out.println(F("\t 'i': sketch info"));
+            out.println(F("\t 'y': toggle DebugOut livesign print"));
+            out.println(F("\t 'Y': toggle DebugOut livesign LED"));
+            out.println(F("\t 'x': tests"));
+            out.println();
+            out.println(F("\t 'A': Show 'HelloWorld' "));
+            out.println(F("\t 'e': enable input"));
+            out.println(F("\t 'E': disable input"));
+            out.println();
+            out.println(F("\t 'set:' enter SubMenu1"));
+            out.println();
+            out.println(F("____________________________________________________________"));
         } break;
         case 'i': {
-            print_info(pOut);
+            print_info(out);
         } break;
         case 'y': {
-            pOut.println(F("\t toggle DebugOut livesign Serial:"));
+            out.println(F("\t toggle DebugOut livesign Serial:"));
             bDebugOut_LiveSign_Serial_Enabled = !bDebugOut_LiveSign_Serial_Enabled;
-            pOut.print(F("\t bDebugOut_LiveSign_Serial_Enabled:"));
-            pOut.println(bDebugOut_LiveSign_Serial_Enabled);
+            out.print(F("\t bDebugOut_LiveSign_Serial_Enabled:"));
+            out.println(bDebugOut_LiveSign_Serial_Enabled);
         } break;
         case 'Y': {
-            pOut.println(F("\t toggle DebugOut livesign LED:"));
+            out.println(F("\t toggle DebugOut livesign LED:"));
             bDebugOut_LiveSign_LED_Enabled = !bDebugOut_LiveSign_LED_Enabled;
-            pOut.print(F("\t bDebugOut_LiveSign_LED_Enabled:"));
-            pOut.println(bDebugOut_LiveSign_LED_Enabled);
+            out.print(F("\t bDebugOut_LiveSign_LED_Enabled:"));
+            out.println(bDebugOut_LiveSign_LED_Enabled);
         } break;
         case 'x': {
             // get state
-            pOut.println(F("__________"));
-            pOut.println(F("Tests:"));
+            out.println(F("__________"));
+            out.println(F("Tests:"));
 
-            pOut.println(F("nothing to do."));
+            out.println(F("nothing to do."));
 
             // uint16_t wTest = 65535;
             uint16_t wTest = atoi(&caCommand[1]);
-            pOut.print(F("wTest: "));
-            pOut.print(wTest);
-            pOut.println();
+            out.print(F("wTest: "));
+            out.print(wTest);
+            out.println();
 
-            pOut.print(F("1: "));
-            pOut.print((byte)wTest);
-            pOut.println();
+            out.print(F("1: "));
+            out.print((byte)wTest);
+            out.println();
 
-            pOut.print(F("2: "));
-            pOut.print((byte)(wTest>>8));
-            pOut.println();
+            out.print(F("2: "));
+            out.print((byte)(wTest>>8));
+            out.println();
 
-            pOut.println();
+            out.println();
 
-            pOut.println(F("__________"));
+            out.println(F("__________"));
         } break;
         //--------------------------------------------------------------------------------
         case 'A': {
-            pOut.println(F("\t Hello World! :-)"));
+            out.println(F("\t Hello World! :-)"));
         } break;
         case 'e': {
                 Serial.println(F("\t enabled input."));
@@ -427,19 +427,19 @@ void handle_MainMenu(Print &pOut, char *caCommand) {
                 bMenuMode = cbMenuMode_SubMenu1;
                 if(1){    //if ( caCommand[4] != '\0' ) {
                     //full length command
-                    //handle_SetValues(pOut, &caCommand[4]);
+                    //handle_SetValues(out, &caCommand[4]);
                 } else {
-                    bMenu_Input_New_FlagComplete = true;
+                    bMenu_Input_new_FlagComplete = true;
                 }
             }
         } break;
         //--------------------------------------------------------------------------------
         default: {
-            pOut.print(F("command '"));
-            pOut.print(caCommand);
-            pOut.println(F("' not recognized. try again."));
-            sMenu_Input_New[0] = '?';
-            bMenu_Input_New_FlagComplete = true;
+            out.print(F("command '"));
+            out.print(caCommand);
+            out.println(F("' not recognized. try again."));
+            sMenu_Input_new[0] = '?';
+            bMenu_Input_new_FlagComplete = true;
         }
     } //end switch
 
@@ -448,13 +448,13 @@ void handle_MainMenu(Print &pOut, char *caCommand) {
 
 
 // Menu Switcher
-void menuSwitcher(Print &pOut, char *caCommand) {
+void menuSwitcher(Print &out, char *caCommand) {
     switch (bMenuMode) {
             case cbMenuMode_MainMenu: {
-                handle_MainMenu(pOut, caCommand);
+                handle_MainMenu(out, caCommand);
             } break;
             case cbMenuMode_SubMenu1: {
-                handle_SubMenu1(pOut, caCommand);
+                handle_SubMenu1(out, caCommand);
             } break;
             default: {
                 // something went wronge - so reset and show MainMenu
@@ -464,29 +464,29 @@ void menuSwitcher(Print &pOut, char *caCommand) {
 }
 
 // Check for NewLineComplete and enter menuSwitcher
-// sets Menu Output channel (pOut)
-void check_NewLineComplete() {
+// sets Menu Output channel (out)
+void check_newLineComplete() {
     // if SMenuCurrent is a full Line (terminated with \n) than parse things
-    if (bMenu_Input_New_FlagComplete) {
+    if (bMenu_Input_new_FlagComplete) {
         /*
-        Serial.print(F("bMenu_Input_New_FlagComplete: sMenu_Input_New: '"));
-        Serial.print(sMenu_Input_New);
+        Serial.print(F("bMenu_Input_new_FlagComplete: sMenu_Input_new: '"));
+        Serial.print(sMenu_Input_new);
         Serial.println(F("'"));
-        Serial.print(F("   bState_UI: '"));
-        Serial.print(bState_UI);
+        Serial.print(F("   state_UI: '"));
+        Serial.print(state_UI);
         Serial.println(F("'"));/**/
 
         // coppy to current buffer
-        strcpy (sMenu_Command_Current, sMenu_Input_New);
+        strcpy (sMenu_Command_Current, sMenu_Input_new);
 
         // reset input
-        memset(sMenu_Input_New, '\0', sizeof(sMenu_Input_New)-1);
-        bMenu_Input_New_FlagComplete = false;
+        memset(sMenu_Input_new, '\0', sizeof(sMenu_Input_new)-1);
+        bMenu_Input_new_FlagComplete = false;
 
         // run command
         menuSwitcher(Serial, sMenu_Command_Current);
 
-    } // if bMenu_Input_New_FlagComplete
+    } // if bMenu_Input_new_FlagComplete
 }
 
 /************************************************/
@@ -518,23 +518,23 @@ void handle_SerialReceive() {
         //if ((charNew == '\r') || (charNew == '\n')) {
         if (charNew == '\n') {
             //clean up last received char if it is a '\r'
-            if (sMenu_Input_New[strlen(sMenu_Input_New) - 1] == '\r') {
-                sMenu_Input_New[strlen(sMenu_Input_New) - 1] = '\0';
+            if (sMenu_Input_new[strlen(sMenu_Input_new) - 1] == '\r') {
+                sMenu_Input_new[strlen(sMenu_Input_new) - 1] = '\0';
             }
             //set complete flag
-            bMenu_Input_New_FlagComplete = true;
+            bMenu_Input_new_FlagComplete = true;
         } else {
-            // add it to the sMenu_Input_New:
-            //sMenu_Input_New = sMenu_Input_New + charNew;
+            // add it to the sMenu_Input_new:
+            //sMenu_Input_new = sMenu_Input_new + charNew;
             // char array version
             //check for length..
-            if (strlen(sMenu_Input_New) < sizeof(sMenu_Input_New) ) {
-                sMenu_Input_New[strlen(sMenu_Input_New)] = charNew;
+            if (strlen(sMenu_Input_new) < sizeof(sMenu_Input_new) ) {
+                sMenu_Input_new[strlen(sMenu_Input_new)] = charNew;
             } else {
                 Serial.println(F("inputstring to long!"));
                 // reset
-                memset(sMenu_Input_New,'\0',sizeof(sMenu_Input_New)-1);
-                bMenu_Input_New_FlagComplete = false;
+                memset(sMenu_Input_new,'\0',sizeof(sMenu_Input_new)-1);
+                bMenu_Input_new_FlagComplete = false;
             }
         }
     }
@@ -709,37 +709,37 @@ void handle_SerialReceive() {
 /************************************************/
 
 
-boolean myInputLeft_callback_GetInput(byte bID, byte bPin) {
+boolean myInputLeft_callback_GetInput(byte id, byte pin) {
     // read input invert reading - button closes to GND.
     // check HWB
     return ! (PINE & B00000100);
-    //return ! digitalRead(bPin);
+    //return ! digitalRead(pin);
 }
 
 
-void myCallback_onEvent(slight_ButtonInput *pInstance, byte bEvent) {
+void myCallback_onEvent(slight_ButtonInput *instance, byte event) {
 
     // Serial.print(F("Instance ID:"));
-    // Serial.println((*pInstance).getID());
+    // Serial.println((*instance).getID());
 
     Serial.print(F("Event: "));
-    (*pInstance).printEvent(Serial, bEvent);
+    (*instance).printEvent(Serial, event);
     Serial.println();
 
     // show event additional infos:
-    switch (bEvent) {
+    switch (event) {
         /*case slight_ButtonInput::event_StateChanged : {
             Serial.print(F("\t state: "));
-            (*pInstance).printState(Serial);
+            (*instance).printState(Serial);
             Serial.println();
         } break;
         // click
         /*case slight_ButtonInput::event_Down : {
             Serial.print(F("the button is pressed down! do something.."));
         } break;*/
-        case slight_ButtonInput::event_HoldingDown : {
+        case slight_ButtonInput::event_holddown : {
             Serial.print(F("duration active: "));
-            Serial.println((*pInstance).getDurationActive());
+            Serial.println((*instance).getDurationActive());
         } break;
         /*case slight_ButtonInput::event_Up : {
             Serial.print(F("up"));
@@ -747,10 +747,10 @@ void myCallback_onEvent(slight_ButtonInput *pInstance, byte bEvent) {
         case slight_ButtonInput::event_Click : {
             Serial.print(F("click"));
         } break;
-        case slight_ButtonInput::event_ClickLong : {
+        case slight_ButtonInput::event_click_long : {
             Serial.print(F("click long"));
         } break;
-        case slight_ButtonInput::event_ClickDouble : {
+        case slight_ButtonInput::event_click_double : {
             Serial.print(F("click double"));
         } break;
         case slight_ButtonInput::event_ClickTriple : {
@@ -758,7 +758,7 @@ void myCallback_onEvent(slight_ButtonInput *pInstance, byte bEvent) {
         } break;*/
         case slight_ButtonInput::event_ClickMulti : {
             Serial.print(F("click count: "));
-            Serial.println((*pInstance).getClickCount());
+            Serial.println((*instance).getClickCount());
         } break;
     } //end switch
 
@@ -816,8 +816,8 @@ void setup() {
     /************************************************/
 
         //LiveSign
-        pinMode(cbID_LED_Info, OUTPUT);
-        digitalWrite(cbID_LED_Info, HIGH);
+        pinMode(id_LED_Info, OUTPUT);
+        digitalWrite(id_LED_Info, HIGH);
 
         // as of arduino 1.0.1 you can use INPUT_PULLUP
 
@@ -836,8 +836,8 @@ void setup() {
         // for ATmega32U4 devices:
         #if defined (__AVR_ATmega32U4__)
             // Wait for Serial Connection to be Opend from Host or 6second timeout
-            unsigned long ulTimeStamp_Start = millis();
-            while( (! Serial) && ( (millis() - ulTimeStamp_Start) < 6000 ) ) {
+            unsigned long timestamp_Start = millis();
+            while( (! Serial) && ( (millis() - timestamp_Start) < 6000 ) ) {
                 1;
             }
         #endif
@@ -877,10 +877,10 @@ void setup() {
     /************************************************/
 
         // reset Serial Debug Input
-        memset(sMenu_Input_New, '\0', sizeof(sMenu_Input_New)-1);
+        memset(sMenu_Input_new, '\0', sizeof(sMenu_Input_new)-1);
         //print Serial Options
-        sMenu_Input_New[0] = '?';
-        bMenu_Input_New_FlagComplete = true;
+        sMenu_Input_new[0] = '?';
+        bMenu_Input_new_FlagComplete = true;
 
 
     /************************************************/
@@ -904,7 +904,7 @@ void loop() {
     /**************************************************/
         // Serial
         handle_SerialReceive();
-        check_NewLineComplete();
+        check_newLineComplete();
 
     /**************************************************/
     /** my Button                                    **/
@@ -917,8 +917,8 @@ void loop() {
 
         /*
         // every Nms
-        if ( ( millis() - ulTimeStamp_LastAction ) > cwUpdateInterval) {
-            ulTimeStamp_LastAction =  millis();
+        if ( ( millis() - timestamp_LastAction ) > cwUpdateInterval) {
+            timestamp_LastAction =  millis();
 
         }
         */
@@ -942,10 +942,10 @@ void loop() {
                 bLEDState = ! bLEDState;
                 if (bLEDState) {
                     //set LED to HIGH
-                    digitalWrite(cbID_LED_Info, HIGH);
+                    digitalWrite(id_LED_Info, HIGH);
                 } else {
                     //set LED to LOW
-                    digitalWrite(cbID_LED_Info, LOW);
+                    digitalWrite(id_LED_Info, LOW);
                 }
             }
 

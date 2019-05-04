@@ -64,10 +64,10 @@ class slight_ButtonInput {
         // public typedefs:
 
             // call back functions
-            typedef void (* tcbfOnEvent) (slight_ButtonInput *pInstance, byte bEvent);
-            //typedef void (* tCbfuncStateChanged) (byte bID, byte bState);
+            typedef void (* tcbfOnEvent) (slight_ButtonInput *instance, byte event);
+            //typedef void (* tCbfuncStateChanged) (byte id, byte state);
 
-            typedef boolean (* tCbfuncGetInput) (byte bID, byte bPin);
+            typedef boolean (* tCbfuncGetInput) (byte id, byte pin);
 
         // public definitions:
 
@@ -85,10 +85,10 @@ class slight_ButtonInput {
             // Click
             static const byte event_Down = 20;
             static const byte event_Up = 21;
-            static const byte event_HoldingDown = 22;
+            static const byte event_holddown = 22;
             static const byte event_Click = 30;
-            static const byte event_ClickLong = 31;
-            static const byte event_ClickDouble = 32;
+            static const byte event_click_long = 31;
+            static const byte event_click_double = 32;
             static const byte event_ClickTriple = 33;
             static const byte event_ClickMulti = 34;
 
@@ -98,15 +98,15 @@ class slight_ButtonInput {
 
             //Constructor
             slight_ButtonInput(
-                byte cbID_New,
-                byte cbPin_New,
-                tCbfuncGetInput cbfuncGetInput_New,
-                tcbfOnEvent cbfCallbackOnEvent_New,
-                const uint16_t cwDuration_Debounce_New = 30,
-                const uint16_t cwDuration_HoldingDown_New = 1000,
-                const uint16_t cwDuration_ClickSingle_New = 50,
-                const uint16_t cwDuration_ClickLong_New = 3000,
-                const uint16_t cwDuration_ClickDouble_New = 250
+                byte id_new,
+                byte pin_new,
+                tCbfuncGetInput cbfuncGetInput_new,
+                tcbfOnEvent cbfCallbackOnEvent_new,
+                const uint16_t duration_debounce_new = 30,
+                const uint16_t duration_holddown_new = 1000,
+                const uint16_t duration_click_single_new = 50,
+                const uint16_t duration_click_long_new = 3000,
+                const uint16_t duration_click_double_new = 250
             );
 
 
@@ -126,13 +126,13 @@ class slight_ButtonInput {
 
             // getState
             byte getState();
-            byte printState(Print &pOut);
-            byte printState(Print &pOut, byte bState_Ext);
+            byte printState(Print &out);
+            byte printState(Print &out, byte state_ext);
 
             // event
             byte getLastEvent();
-            byte printEventLast(Print &pOut);
-            byte printEvent(Print &pOut, byte bStateTemp);
+            byte printEventLast(Print &out);
+            byte printEvent(Print &out, byte state_temp);
 
             // main update
             byte update();
@@ -152,50 +152,50 @@ class slight_ButtonInput {
         // private definitions:
 
             // ID
-            const byte cbID;
+            const byte id;
 
             // flag to check if the begin function is already called and the class is ready to work.
-            boolean bReady;
+            boolean ready;
 
             // internal state
-            byte bState;
+            byte state;
 
             // event
-            byte bEvent;
-            byte bEventLast;
+            byte event;
+            byte event_last;
             const tcbfOnEvent cbfCallbackOnEvent;
 
             // other things
 
             // events enabled?
-            bool bEnabled;
+            bool enabled;
 
             // input pin
-            const byte cbPin;
+            const byte pin;
             // get input state
             const tCbfuncGetInput cbfuncGetInput;
 
             // durations
-            const uint16_t cwDuration_Debounce;
-            const uint16_t cwDuration_HoldingDown;
-            const uint16_t cwDuration_ClickSingle;
-            const uint16_t cwDuration_ClickLong;
-            const uint16_t cwDuration_ClickDouble;
+            const uint16_t duration_debounce;
+            const uint16_t duration_holddown;
+            const uint16_t duration_click_single;
+            const uint16_t duration_click_long;
+            const uint16_t duration_click_double;
 
             // input timing
-            unsigned long ulTimeStamp_LastActivity;
-            unsigned long ulTimeStamp_LastRelease;
-            unsigned long ulTimeStamp_LastHoldDownEvent;
+            unsigned long timestamp_last_activity;
+            unsigned long timestamp_last_release;
+            unsigned long timestamp_last_holddown_event;
 
             //
-            unsigned long ulDuration_Active;
+            unsigned long duration_Active;
 
-            byte bClick_Count;
+            byte click_count;
 
 
         // private methods
 
-            void generateEvent(byte bEventNew);
+            void generateEvent(byte event_new);
 };
 
 #endif //ifndef slight_ButtonInput_h
