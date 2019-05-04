@@ -49,36 +49,10 @@ https://opensource.org/licenses/mit-license.php
 #include <slight_ButtonInput.h>
 
 
-// using default values:
-slight_ButtonInput mybutton1(1, A0, mybutton_get_input, mybutton_event);
-
-slight_ButtonInput mybutton2(
-    // byte id_new
-    2,
-    // byte pin_new,
-    A1,
-    // tCbfuncGetInput cbfuncGetInput_new,
-    mybutton_get_input,
-    // tcbfOnEvent cbfCallbackOnEvent_new,
-    mybutton_event,
-    // const uint16_t duration_debounce_new = 30,
-      30,
-    // const uint16_t duration_holddown_new = 1000,
-    1000,
-    // const uint16_t duration_click_single_new =   50,
-      50,
-    // const uint16_t duration_click_long_new =   3000,
-    3000,
-    // const uint16_t duration_click_double_new = 1000
-     500
-);
-
-
-
 // ------------------------------------------
-// slight_ButtonInput functions
+// slight_ButtonInput things
 
-boolean mybutton_get_input(byte id, byte pin) {
+bool mybutton_get_input(byte id, byte pin) {
     // read input + invert: button closes to GND.
     return !digitalRead(pin);
 }
@@ -128,6 +102,29 @@ void mybutton_event(slight_ButtonInput *instance, byte event) {
     } //end switch
 }
 
+// using default values:
+slight_ButtonInput mybutton1(1, A0, mybutton_get_input, mybutton_event);
+
+slight_ButtonInput mybutton2(
+    // byte id_new
+    2,
+    // byte pin_new,
+    A1,
+    // tCbfuncGetInput cbfuncGetInput_new,
+    mybutton_get_input,
+    // tcbfOnEvent cbfCallbackOnEvent_new,
+    mybutton_event,
+    // const uint16_t duration_debounce_new = 30,
+      30,
+    // const uint16_t duration_holddown_new = 1000,
+    1000,
+    // const uint16_t duration_click_single_new =   50,
+      50,
+    // const uint16_t duration_click_long_new =   3000,
+    3000,
+    // const uint16_t duration_click_double_new = 1000
+     500
+);
 
 // ------------------------------------------
 // setup
