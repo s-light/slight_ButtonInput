@@ -14,8 +14,8 @@
         10.01.2014 20:51 added Double Click detection
         11.01.2014 00:59 added printState(Print &out) function
         15.03.2014 15:55 changed to event system with Instance callback
-        15.03.2014 22:48 redesigned events: click events are generated after a event_Up.
-        15.03.2014 22:48 added event_ClickTriple, event_ClickMulti, event_holddown
+        15.03.2014 22:48 redesigned events: click events are generated after a event_up.
+        15.03.2014 22:48 added event_click_triple, event_click_multi, event_holddown
 *******************************************/
 
 /******************************************
@@ -198,7 +198,7 @@ byte slight_ButtonInput::update() {
                         timestamp_last_activity = millis();
                         timestamp_last_holddown_event = millis();
                         state_temp = state_Active;
-                        generateEvent(event_Down);
+                        generateEvent(event_down);
                     } else if (state == state_Active) {
                         // check for HoldingDown event
                         duration_Active = ulLastDuration;
@@ -213,7 +213,7 @@ byte slight_ButtonInput::update() {
                 // Button Released
                 duration_Active = ( millis() - timestamp_last_activity );
                 //state_temp = state_Released;
-                generateEvent(event_Up);
+                generateEvent(event_up);
                 state_temp = state_Standby;
 
                 ////////////////////////////////////////////////////////////////////////////////
@@ -229,9 +229,9 @@ byte slight_ButtonInput::update() {
                     if (click_count == 2) {
                         generateEvent(event_click_double);
                     } else if (click_count == 3) {
-                        generateEvent(event_ClickTriple);
+                        generateEvent(event_click_triple);
                     } else if (click_count > 3) {
-                        generateEvent(event_ClickMulti);
+                        generateEvent(event_click_multi);
                     }
                 } else {
                     // reset ClickMulti
@@ -240,7 +240,7 @@ byte slight_ButtonInput::update() {
                     if (duration_Active > duration_click_long) {
                         generateEvent(event_click_long);
                     } else {
-                        generateEvent(event_Click);
+                        generateEvent(event_click);
                     }
                 }
                 ////////////////////////////////////////////////////////////////////////////////
@@ -330,16 +330,16 @@ byte slight_ButtonInput::printEvent(Print &out, byte eventTemp) {
         } break;
 
         // click
-        case slight_ButtonInput::event_Down : {
+        case slight_ButtonInput::event_down : {
             out.print(F("down"));
         } break;
         case slight_ButtonInput::event_holddown : {
             out.print(F("holding down"));
         } break;
-        case slight_ButtonInput::event_Up : {
+        case slight_ButtonInput::event_up : {
             out.print(F("up"));
         } break;
-        case slight_ButtonInput::event_Click : {
+        case slight_ButtonInput::event_click : {
             out.print(F("click"));
         } break;
         case slight_ButtonInput::event_click_long : {
@@ -348,10 +348,10 @@ byte slight_ButtonInput::printEvent(Print &out, byte eventTemp) {
         case slight_ButtonInput::event_click_double : {
             out.print(F("click double"));
         } break;
-        case slight_ButtonInput::event_ClickTriple : {
+        case slight_ButtonInput::event_click_triple : {
             out.print(F("click triple"));
         } break;
-        case slight_ButtonInput::event_ClickMulti : {
+        case slight_ButtonInput::event_click_multi : {
             out.print(F("click multi"));
         } break;
         default: {

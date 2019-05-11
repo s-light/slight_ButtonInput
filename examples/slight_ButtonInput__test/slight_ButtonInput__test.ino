@@ -24,7 +24,7 @@
         12.11.2013 17:33 created.
         13.11.2013 17:41 add object ID
         15.03.2014 20:24 changed to use new instance technique
-        15.03.2014 22:52 added demo for new events (event_ClickTriple, event_ClickMulti, event_holddown)
+        15.03.2014 22:52 added demo for new events (event_click_triple, event_click_multi, event_holddown)
 
 
     TO DO:
@@ -734,17 +734,17 @@ void myCallback_onEvent(slight_ButtonInput *instance, byte event) {
             Serial.println();
         } break;
         // click
-        /*case slight_ButtonInput::event_Down : {
+        /*case slight_ButtonInput::event_down : {
             Serial.print(F("the button is pressed down! do something.."));
         } break;*/
         case slight_ButtonInput::event_holddown : {
             Serial.print(F("duration active: "));
             Serial.println((*instance).getDurationActive());
         } break;
-        /*case slight_ButtonInput::event_Up : {
+        /*case slight_ButtonInput::event_up : {
             Serial.print(F("up"));
         } break;
-        case slight_ButtonInput::event_Click : {
+        case slight_ButtonInput::event_click : {
             Serial.print(F("click"));
         } break;
         case slight_ButtonInput::event_click_long : {
@@ -753,10 +753,10 @@ void myCallback_onEvent(slight_ButtonInput *instance, byte event) {
         case slight_ButtonInput::event_click_double : {
             Serial.print(F("click double"));
         } break;
-        case slight_ButtonInput::event_ClickTriple : {
+        case slight_ButtonInput::event_click_triple : {
             Serial.print(F("click triple"));
         } break;*/
-        case slight_ButtonInput::event_ClickMulti : {
+        case slight_ButtonInput::event_click_multi : {
             Serial.print(F("click count: "));
             Serial.println((*instance).getClickCount());
         } break;

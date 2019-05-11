@@ -87,14 +87,14 @@ class slight_ButtonInput {
             static const byte state_Debouncing = 14;
 
             // Click
-            static const byte event_Down = 20;
-            static const byte event_Up = 21;
+            static const byte event_down = 20;
+            static const byte event_up = 21;
             static const byte event_holddown = 22;
-            static const byte event_Click = 30;
+            static const byte event_click = 30;
             static const byte event_click_long = 31;
             static const byte event_click_double = 32;
-            static const byte event_ClickTriple = 33;
-            static const byte event_ClickMulti = 34;
+            static const byte event_click_triple = 33;
+            static const byte event_click_multi = 34;
 
 
 

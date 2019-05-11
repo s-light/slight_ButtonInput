@@ -39,11 +39,11 @@ state_NotValid	LITERAL1
 state_Standby	LITERAL1
 state_Active	LITERAL1
 state_Debouncing	LITERAL1
-event_Down	LITERAL1
-event_Up	LITERAL1
+event_down	LITERAL1
+event_up	LITERAL1
 event_holddown	LITERAL1
-event_Click	LITERAL1
+event_click	LITERAL1
 event_click_long	LITERAL1
 event_click_double	LITERAL1
-event_ClickTriple	LITERAL1
-event_ClickMulti	LITERAL1
+event_click_triple	LITERAL1
+event_click_multi	LITERAL1

@@ -73,17 +73,17 @@ void mybutton_event(slight_ButtonInput *instance, byte event) {
             (*instance).printState(Serial);
             Serial.println();
         } break;
-        case slight_ButtonInput::event_Down : {
+        case slight_ButtonInput::event_down : {
             Serial.print(F("the button is pressed down! do something.."));
         } break;
         case slight_ButtonInput::event_holddown : {
             Serial.print(F("duration active: "));
             Serial.println((*instance).getDurationActive());
         } break;
-        case slight_ButtonInput::event_Up : {
+        case slight_ButtonInput::event_up : {
             Serial.print(F("up"));
         } break;
-        case slight_ButtonInput::event_Click : {
+        case slight_ButtonInput::event_click : {
             Serial.print(F("click"));
         } break;
         case slight_ButtonInput::event_click_long : {
@@ -92,10 +92,10 @@ void mybutton_event(slight_ButtonInput *instance, byte event) {
         case slight_ButtonInput::event_click_double : {
             Serial.print(F("click double"));
         } break;
-        case slight_ButtonInput::event_ClickTriple : {
+        case slight_ButtonInput::event_click_triple : {
             Serial.print(F("click triple"));
         } break;
-        case slight_ButtonInput::event_ClickMulti : {
+        case slight_ButtonInput::event_click_multi : {
             Serial.print(F("click count: "));
             Serial.println((*instance).getClickCount());
         } break;
