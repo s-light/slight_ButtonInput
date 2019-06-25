@@ -61,12 +61,6 @@ SOFTWARE.
 https://opensource.org/licenses/mit-license.php
 ******************************************/
 
-/** Serial.print to Flash: Notepad++ Replace RegEx
-    Find what:        Serial.print(.*)\("(.*)"\);
-    Replace with:    Serial.print\1(F("\2"));
-**/
-
-
 /** Includes Core Arduino functionality **/
 #if ARDUINO < 100
 #include <WProgram.h>
@@ -74,13 +68,13 @@ https://opensource.org/licenses/mit-license.php
 #include <Arduino.h>
 #endif
 
-/** Include yourself s header file **/
+// Include yourself s header file
 #include "slight_ButtonInput.h"
 // use "" for files in same directory
 
 
 /******************************************/
-/**** constructor                                                                              ****/
+// constructor
 /******************************************/
 
 /** Constructor **/
@@ -153,7 +147,7 @@ void slight_ButtonInput::begin() {
 
 
 /******************************************/
-/****                                      Public methods                                      ****/
+// Public methods
 /******************************************/
 
 // main function

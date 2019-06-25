@@ -1,6 +1,6 @@
 /******************************************
     slight_Button Library
-        for more information changelog / history see slight_Button.cpp
+        for more information see slight_Button.cpp
     written by stefan krueger (s-light),
         git@s-light.eu, http://s-light.eu, https://github.com/s-light/
 ******************************************/
@@ -172,7 +172,7 @@ class slight_ButtonInput {
             // other things
 
             // events enabled?
-            bool enabled;
+            boolean enabled;
 
             // input pin
             const byte pin;
@@ -202,6 +202,6 @@ class slight_ButtonInput {
             void generateEvent(byte event_new);
 };
 
-#endif //ifndef slight_ButtonInput_h
+#endif // ifndef slight_ButtonInput_h
 
 /** the end **/
