@@ -73,7 +73,7 @@ public:
     slight_ButtonInput::tCallbackFunction callbackOnEvent;
 
     slight_ButtonInput mybutton = slight_ButtonInput(
-        1, A3, callbackGetInput, callbackOnEvent);
+        55, A3, callbackGetInput, callbackOnEvent);
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // configurations

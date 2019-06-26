@@ -79,8 +79,9 @@ void MyInput::begin(Stream &out) {
         // setup
         out.println("MyInput begin:");
 
+        pinMode(mybutton.pin, INPUT_PULLUP);
         mybutton.begin();
-
+        mybutton.flag_filter_multi_click_events = true;
 
         out.println("done:");
         // enable
