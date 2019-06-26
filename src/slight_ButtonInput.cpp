@@ -61,12 +61,6 @@ SOFTWARE.
 https://opensource.org/licenses/mit-license.php
 ******************************************/
 
-/** Includes Core Arduino functionality **/
-#if ARDUINO < 100
-#include <WProgram.h>
-#else
-#include <Arduino.h>
-#endif
 
 // Include yourself s header file
 // NOLINTNEXTLINE(build/include)

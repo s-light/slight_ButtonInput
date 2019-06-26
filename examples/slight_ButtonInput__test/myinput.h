@@ -53,6 +53,7 @@ public:
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // constructor
 
+    // MyInput(Stream &out);
     MyInput();
     ~MyInput();
 
@@ -65,9 +66,13 @@ public:
     void end();
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // helper
-    boolean mybutton_get_input(slight_ButtonInput *instance);
+    // button
+    static boolean mybutton_get_input(slight_ButtonInput *instance);
     void mybutton_event(slight_ButtonInput *instance);
+    slight_ButtonInput::tCallbackFunction callbackOnEvent;
+
+    slight_ButtonInput mybutton = slight_ButtonInput(
+        1, A3, mybutton_get_input, callbackOnEvent);
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // configurations
@@ -77,10 +82,13 @@ private:
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // private functions
 
-
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // attributes
     bool ready;
+    // Stream &out;
+
+    uint8_t state = 0;
+    uint8_t state_last = 0;
 
 };  // class MyInput
 

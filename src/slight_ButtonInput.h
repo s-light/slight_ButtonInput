@@ -61,6 +61,21 @@ https://opensource.org/licenses/mit-license.php
 #include <Arduino.h>
 #endif
 
+// #undef min
+// #undef max
+//
+// // tries to fix
+// // undefined reference to `std::__throw_bad_function_call()'
+// // found at
+// // https://forum.arduino.cc/index.php?topic=382211.msg2790687#msg2790687
+// namespace std {
+//     void __throw_bad_function_call() {
+//         // Serial.println(F("STL ERROR - __throw_bad_function_call"));
+//     }
+// }
+//
+// #include <functional>
+
 /** Class Definition: **/
 
 class slight_ButtonInput {
@@ -68,8 +83,9 @@ class slight_ButtonInput {
         // typedefs:
 
         // call back functions
-        typedef void (* tCallbackFunction) (slight_ButtonInput *instance);
         typedef boolean (* tCallbackFunctionGetInput) (slight_ButtonInput *instance);
+        typedef void (* tCallbackFunction) (slight_ButtonInput *instance);
+        // using tCallbackFunction = std::function<void(slight_ButtonInput *instance)>;
 
         // definitions:
 

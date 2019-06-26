@@ -52,6 +52,7 @@ https://opensource.org/licenses/mit-license.php
 
 #include "myinput.h"
 
+// MyInput myinput = MyInput(Serial);
 MyInput myinput = MyInput();
 
 // ------------------------------------------

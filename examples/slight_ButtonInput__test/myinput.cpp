@@ -51,7 +51,12 @@ SOFTWARE.
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // functions
 
-MyInput::MyInput() {
+// MyInput::MyInput(Stream &out): out(out) {
+MyInput::MyInput()
+:
+    callbackOnEvent(mybutton_event)
+// NOLINTNEXTLINE(whitespace/braces)
+{
     ready = false;
 }
 
@@ -65,7 +70,12 @@ void MyInput::begin(Stream &out) {
     // start up...
     if (ready == false) {
         // setup
+        out.println("MyInput begin:");
 
+        mybutton.begin();
+
+
+        out.println("done:");
         // enable
         ready = true;
     }
@@ -79,7 +89,11 @@ void MyInput::end() {
 
 void MyInput::update() {
     if (ready) {
-        // do it :-)
+        mybutton.update();
+        if (state != state_last) {
+            state_last = state;
+            Serial.println("State changed!");
+        }
     }
 }
 
@@ -88,13 +102,13 @@ void MyInput::update() {
 // ------------------------------------------
 // slight_ButtonInput things
 
-boolean mybutton_get_input(slight_ButtonInput *instance) {
+boolean MyInput::mybutton_get_input(slight_ButtonInput *instance) {
     // read input + invert: button closes to GND.
     return !digitalRead((*instance).pin);
 }
 
 
-void mybutton_event(slight_ButtonInput *instance) {
+void MyInput::mybutton_event(slight_ButtonInput *instance) {
     Serial.print(F("instance:"));
     Serial.print((*instance).id);
     Serial.print(F(" - event: "));
@@ -115,6 +129,7 @@ void mybutton_event(slight_ButtonInput *instance) {
         } break;
         case slight_ButtonInput::event_click : {
             // Serial.println(F("click"));
+            state += 1;
         } break;
         case slight_ButtonInput::event_click_long : {
             Serial.print(F("click long "));
@@ -132,38 +147,6 @@ void mybutton_event(slight_ButtonInput *instance) {
         } break;
     }  // end switch
 }
-
-
-// const uint8_t mybuttons_count = 4;
-// slight_ButtonInput mybuttons[mybuttons_count] = {
-//     slight_ButtonInput(0, A0, mybutton_get_input, mybutton_event),
-//     slight_ButtonInput(
-//         // uint8_t id_new
-//         1,
-//         // uint8_t pin_new,
-//         A3,
-//         // tCallbackFunctionGetInput callbackGetInput_new,
-//         mybutton_get_input,
-//         // tCallbackFunction callbackOnEvent_new,
-//         mybutton_event,
-//         // const uint16_t duration_debounce_new = 20,
-//         10,
-//         // const uint16_t duration_holddown_new = 1000,
-//         1000,
-//         // const uint16_t duration_click_long_new =   3000,
-//         500,
-//         // const uint16_t duration_click_double_new = 250
-//         250
-//     ),
-//     // using default values:
-//     slight_ButtonInput(2, A4, mybutton_get_input, mybutton_event, 1),
-//     slight_ButtonInput(3, A5, mybutton_get_input, mybutton_event, 1),
-// };
-
-
-
-
-
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
