@@ -52,15 +52,15 @@ https://opensource.org/licenses/mit-license.php
 // ------------------------------------------
 // slight_ButtonInput things
 
-bool mybutton_get_input(byte id, byte pin) {
+bool mybutton_get_input(uint8_t id, uint8_t pin) {
     // read input + invert: button closes to GND.
     return !digitalRead(pin);
 }
 
 
-void mybutton_event(slight_ButtonInput *instance, byte event) {
+void mybutton_event(slight_ButtonInput *instance, uint8_t event) {
     Serial.print(F("Instance ID:"));
-    Serial.println((*instance).getID());
+    Serial.println((*instance).id);
 
     Serial.print(F("Event: "));
     (*instance).printEvent(Serial, event);
@@ -74,29 +74,29 @@ void mybutton_event(slight_ButtonInput *instance, byte event) {
             Serial.println();
         } break;
         case slight_ButtonInput::event_down : {
-            Serial.print(F("the button is pressed down! do something.."));
+            Serial.println(F("the button is pressed down! do something.."));
         } break;
         case slight_ButtonInput::event_holddown : {
             Serial.print(F("duration active: "));
             Serial.println((*instance).getDurationActive());
         } break;
         case slight_ButtonInput::event_up : {
-            Serial.print(F("up"));
+            Serial.println(F("up"));
         } break;
         case slight_ButtonInput::event_click : {
-            Serial.print(F("click"));
+            Serial.println(F("click"));
         } break;
         case slight_ButtonInput::event_click_long : {
-            Serial.print(F("click long"));
+            Serial.println(F("click long"));
         } break;
         case slight_ButtonInput::event_click_double : {
-            Serial.print(F("click double"));
+            Serial.println(F("click double"));
         } break;
         case slight_ButtonInput::event_click_triple : {
-            Serial.print(F("click triple"));
+            Serial.println(F("click triple"));
         } break;
         case slight_ButtonInput::event_click_multi : {
-            Serial.print(F("click count: "));
+            Serial.print(F("click multi - count: "));
             Serial.println((*instance).getClickCount());
         } break;
     } //end switch
@@ -106,10 +106,10 @@ void mybutton_event(slight_ButtonInput *instance, byte event) {
 slight_ButtonInput mybutton1(1, A0, mybutton_get_input, mybutton_event);
 
 slight_ButtonInput mybutton2(
-    // byte id_new
+    // uint8_t id_new
     2,
-    // byte pin_new,
-    A1,
+    // uint8_t pin_new,
+    A3,
     // tCbfuncGetInput cbfuncGetInput_new,
     mybutton_get_input,
     // tcbfOnEvent cbfCallbackOnEvent_new,

@@ -65,141 +65,135 @@ https://opensource.org/licenses/mit-license.php
 
 class slight_ButtonInput {
     public:
-        // public typedefs:
+        // typedefs:
 
-            // call back functions
-            typedef void (* tcbfOnEvent) (slight_ButtonInput *instance, byte event);
-            //typedef void (* tCbfuncStateChanged) (byte id, byte state);
+        // call back functions
+        typedef void (* tcbfOnEvent) (slight_ButtonInput *instance, uint8_t event);
+        //typedef void (* tCbfuncStateChanged) (uint8_t id, uint8_t state);
 
-            typedef boolean (* tCbfuncGetInput) (byte id, byte pin);
+        typedef boolean (* tCbfuncGetInput) (uint8_t id, uint8_t pin);
 
-        // public definitions:
+        // definitions:
 
-            // init
-            static const byte event_NoEvent =  0;
+        // init
+        static const uint8_t event_NoEvent =  0;
 
-            // State
-            static const byte event_StateChanged = 10;
+        // State
+        static const uint8_t event_StateChanged = 10;
 
-            static const byte state_NotValid = 11;
-            static const byte state_Standby = 12;
-            static const byte state_Active = 13;
-            static const byte state_Debouncing = 14;
+        static const uint8_t state_NotValid = 11;
+        static const uint8_t state_Standby = 12;
+        static const uint8_t state_Active = 13;
+        static const uint8_t state_Debouncing = 14;
 
-            // Click
-            static const byte event_down = 20;
-            static const byte event_up = 21;
-            static const byte event_holddown = 22;
-            static const byte event_click = 30;
-            static const byte event_click_long = 31;
-            static const byte event_click_double = 32;
-            static const byte event_click_triple = 33;
-            static const byte event_click_multi = 34;
+        // Click
+        static const uint8_t event_down = 20;
+        static const uint8_t event_up = 21;
+        static const uint8_t event_holddown = 22;
+        static const uint8_t event_click = 30;
+        static const uint8_t event_click_long = 31;
+        static const uint8_t event_click_double = 32;
+        static const uint8_t event_click_triple = 33;
+        static const uint8_t event_click_multi = 34;
 
-
-
-        // public methods
-
-            //Constructor
-            slight_ButtonInput(
-                byte id_new,
-                byte pin_new,
-                tCbfuncGetInput cbfuncGetInput_new,
-                tcbfOnEvent cbfCallbackOnEvent_new,
-                const uint16_t duration_debounce_new = 30,
-                const uint16_t duration_holddown_new = 1000,
-                const uint16_t duration_click_single_new = 50,
-                const uint16_t duration_click_long_new = 3000,
-                const uint16_t duration_click_double_new = 250
-            );
+        //Constructor
+        slight_ButtonInput(
+            uint8_t id_new,
+            uint8_t pin_new,
+            tCbfuncGetInput cbfuncGetInput_new,
+            tcbfOnEvent cbfCallbackOnEvent_new,
+            const uint16_t duration_debounce_new = 30,
+            const uint16_t duration_holddown_new = 1000,
+            const uint16_t duration_click_single_new = 50,
+            const uint16_t duration_click_long_new = 3000,
+            const uint16_t duration_click_double_new = 250
+        );
 
 
 
-            //Destructor
-            ~slight_ButtonInput();
+        //Destructor
+        ~slight_ButtonInput();
 
 
-            // initialize class
-            void begin();
+        // initialize class
+        void begin();
 
-            // check if class is ready to operate.
-            boolean isReady();
+        // check if class is ready to operate.
+        boolean isReady();
 
-            // get ID
-            byte getID();
+        // get ID
+        uint8_t getID();
 
-            // getState
-            byte getState();
-            byte printState(Print &out);
-            byte printState(Print &out, byte state_ext);
+        // getState
+        uint8_t getState();
+        uint8_t printState(Print &out);
+        uint8_t printState(Print &out, uint8_t state_ext);
 
-            // event
-            byte getLastEvent();
-            byte printEventLast(Print &out);
-            byte printEvent(Print &out, byte state_temp);
+        // event
+        uint8_t getLastEvent();
+        uint8_t printEventLast(Print &out);
+        uint8_t printEvent(Print &out, uint8_t state_temp);
 
-            // main update
-            byte update();
+        // main update
+        uint8_t update();
 
-            // enable / disable Input
-            void enable();
-            void disable();
+        // enable / disable Input
+        void enable();
+        void disable();
 
-            // get Pin
-            byte getPin();
+        // get Pin
+        uint8_t getPin();
 
-            unsigned long getDurationActive();
+        uint32_t getDurationActive();
 
-            byte getClickCount();
+        uint8_t getClickCount();
+
+        // ID
+        const uint8_t id;
 
     private:
-        // private definitions:
+        // flag to check if the begin function is already called and the class is ready to work.
+        boolean ready;
 
-            // ID
-            const byte id;
+        // internal state
+        uint8_t state;
 
-            // flag to check if the begin function is already called and the class is ready to work.
-            boolean ready;
+        // event
+        uint8_t event;
+        uint8_t event_last;
+        const tcbfOnEvent cbfCallbackOnEvent;
 
-            // internal state
-            byte state;
+        // other things
 
-            // event
-            byte event;
-            byte event_last;
-            const tcbfOnEvent cbfCallbackOnEvent;
+        // events enabled?
+        boolean enabled;
 
-            // other things
+        // input pin
+        const uint8_t pin;
+        // get input state
+        const tCbfuncGetInput cbfuncGetInput;
 
-            // events enabled?
-            boolean enabled;
+        // durations
+        const uint16_t duration_debounce;
+        const uint16_t duration_holddown;
+        const uint16_t duration_click_single;
+        const uint16_t duration_click_long;
+        const uint16_t duration_click_double;
 
-            // input pin
-            const byte pin;
-            // get input state
-            const tCbfuncGetInput cbfuncGetInput;
+        // input timing
+        uint32_t timestamp_last_activity;
+        uint32_t timestamp_last_release;
+        uint32_t timestamp_last_holddown_event;
 
-            // durations
-            const uint16_t duration_debounce;
-            const uint16_t duration_holddown;
-            const uint16_t duration_click_single;
-            const uint16_t duration_click_long;
-            const uint16_t duration_click_double;
+        //
+        uint32_t duration_Active;
 
-            // input timing
-            unsigned long timestamp_last_activity;
-            unsigned long timestamp_last_release;
-            unsigned long timestamp_last_holddown_event;
+        uint8_t click_count;
 
-            //
-            unsigned long duration_Active;
-
-            byte click_count;
-
-
-        // private methods
-
-            void generateEvent(byte event_new);
+        void generateEvent(uint8_t event_new);
+        uint8_t handle_start_debouncing();
+        uint8_t handle_active();
+        uint8_t handle_button_released();
 };
 
 #endif // ifndef slight_ButtonInput_h

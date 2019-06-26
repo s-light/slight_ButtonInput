@@ -132,8 +132,8 @@ void print_info(Print &out) {
 /**************************************************/
 
 /*slight_ButtonInput(
-    byte id_new,
-    byte pin_new,
+    uint8_t id_new,
+    uint8_t pin_new,
     tCbfuncGetInput cbfuncGetInput_new,
     tcbfOnEvent cbfCallbackOnEvent_new,
     const uint16_t duration_debounce_new = 30,
@@ -144,8 +144,8 @@ void print_info(Print &out) {
 );
 */
 slight_ButtonInput myButtonLeft(
-    42,  // byte id_new
-    A2,  // byte pin_new,
+    42,  // uint8_t id_new
+    A2,  // uint8_t pin_new,
     myInputLeft_callback_GetInput,  // tCbfuncGetInput cbfuncGetInput_new,
     myCallback_onEvent,  // tcbfOnEvent cbfCallbackOnEvent_new,
       30,  // const uint16_t duration_debounce_new = 30,
@@ -164,9 +164,9 @@ slight_ButtonInput myButtonLeft(
 /******************************************/
 
 boolean bLEDState = 0;
-const byte id_LED_Info = 9; //D9
+const uint8_t id_LED_Info = 9; //D9
 
-unsigned long ulDebugOut_LiveSign_TimeStamp_LastAction    = 0;
+uint32_t ulDebugOut_LiveSign_TimeStamp_LastAction    = 0;
 const uint16_t cwDebugOut_LiveSign_UpdateInterval            = 1000; //ms
 
 boolean bDebugOut_LiveSign_Serial_Enabled    = 0;
@@ -177,12 +177,12 @@ boolean bDebugOut_LiveSign_LED_Enabled    = 1;
 /**  led and serial debug                        **/
 /**************************************************/
 // myFaderOne output on:
-byte pin_LED = 9;
+uint8_t pin_LED = 9;
 
-byte bDebugOut_myFaderOne_Output_Enable        = 0;
+uint8_t bDebugOut_myFaderOne_Output_Enable        = 0;
 
 
-//unsigned long timestamp_LastAction    = 0;
+//uint32_t timestamp_LastAction    = 0;
 //const uint16_t cwUpdateInterval            = 0; //ms
 
 
@@ -217,7 +217,7 @@ int freeRam () {
 }
 
 
-void printBinary8(byte bIn)  {
+void printBinary8(uint8_t bIn)  {
 
     for (unsigned int mask = 0b10000000; mask; mask >>= 1) {
         if (mask & bIn) {
@@ -256,18 +256,18 @@ void printBinary16(uint16_t wIn)  {
 
 
 
-void printArray_Byte(byte *array, byte bCount) {
+void printArray_uint8_t(uint8_t *array, uint8_t bCount) {
     Serial.print(F(" "));
-    byte bIndex = 0;
-    printAlignRight_Byte(array[bIndex]);
+    uint8_t bIndex = 0;
+    printAlignRight_uint8_t(array[bIndex]);
     for(bIndex = 1; bIndex < bCount; bIndex++){
         Serial.print(F(", "));
-        printAlignRight_Byte(array[bIndex]);
+        printAlignRight_uint8_t(array[bIndex]);
     }
 }
 
-void printAlignRight_Byte(byte bValue) {
-    //byte bOffset = 0;
+void printAlignRight_uint8_t(uint8_t bValue) {
+    //uint8_t bOffset = 0;
     if (bValue < 100) {
         if (bValue < 10) {
             //bOffset = 2;
@@ -281,9 +281,9 @@ void printAlignRight_Byte(byte bValue) {
 }
 
 
-void printArray_uint16_t(uint16_t *array, byte bCount) {
+void printArray_uint16_t(uint16_t *array, uint8_t bCount) {
     Serial.print(F(" [ "));
-    byte bIndex = 0;
+    uint8_t bIndex = 0;
     printAlignRight_uint16_t(array[bIndex]);
     for(bIndex = 1; bIndex < bCount; bIndex++){
         Serial.print(F(", "));
@@ -292,8 +292,8 @@ void printArray_uint16_t(uint16_t *array, byte bCount) {
     Serial.print(F("]"));
 }
 
-byte printAlignRight_uint16_t(uint16_t wValue) {
-    byte bLeadingZeros = 0;
+uint8_t printAlignRight_uint16_t(uint16_t wValue) {
+    uint8_t bLeadingZeros = 0;
     if (wValue < 10000) {
         bLeadingZeros = bLeadingZeros + 1;
         Serial.print(F(" "));
@@ -396,11 +396,11 @@ void handle_MainMenu(Print &out, char *caCommand) {
             out.println();
 
             out.print(F("1: "));
-            out.print((byte)wTest);
+            out.print((uint8_t)wTest);
             out.println();
 
             out.print(F("2: "));
-            out.print((byte)(wTest>>8));
+            out.print((uint8_t)(wTest>>8));
             out.println();
 
             out.println();
@@ -496,7 +496,7 @@ void check_newLineComplete() {
 void handle_SerialReceive() {
     // collect next input text
     while (Serial.available()) {
-        // get the new byte:
+        // get the new uint8_t:
         char charNew = (char)Serial.read();
         /*Serial.print(F("charNew '"));
         Serial.print(charNew);
@@ -626,7 +626,7 @@ void commandParser(char *caCommand) {
                 //char strTemp[sizeof(caCommand)];
                 //strncpy(strTemp, caCommand[1], ptrSeparation );
 
-                byte bChannel = atoi(&caCommand[1]);
+                uint8_t bChannel = atoi(&caCommand[1]);
                 Serial.print(F("\t bChannel:"));
                 Serial.println(bChannel);
 
@@ -635,11 +635,11 @@ void commandParser(char *caCommand) {
                 //Serial.print(F("\t ptrSeparation:"));
                 //Serial.println(*ptrSeparation);
 
-                //byte bValue = atoi(&caCommand[(*ptrSeparation)+1]);
+                //uint8_t bValue = atoi(&caCommand[(*ptrSeparation)+1]);
                 //Serial.print(F("\t bValue:"));
                 //Serial.println(bValue);
 
-                byte bValue = atoi(&caCommand[3]);
+                uint8_t bValue = atoi(&caCommand[3]);
                 Serial.print(F("\t bValue:"));
                 Serial.println(bValue);
 
@@ -666,7 +666,7 @@ void commandParser(char *caCommand) {
 void handle_SerialReceive() {
 
     while (Serial.available()) {
-        // get the new byte:
+        // get the new uint8_t:
         char charNew = (char)Serial.read();
         // if the incoming character is a newline
         if (charNew == '\n') {
@@ -709,7 +709,7 @@ void handle_SerialReceive() {
 /************************************************/
 
 
-boolean myInputLeft_callback_GetInput(byte id, byte pin) {
+boolean myInputLeft_callback_GetInput(uint8_t id, uint8_t pin) {
     // read input invert reading - button closes to GND.
     // check HWB
     return ! (PINE & B00000100);
@@ -717,10 +717,10 @@ boolean myInputLeft_callback_GetInput(byte id, byte pin) {
 }
 
 
-void myCallback_onEvent(slight_ButtonInput *instance, byte event) {
+void myCallback_onEvent(slight_ButtonInput *instance, uint8_t event) {
 
     // Serial.print(F("Instance ID:"));
-    // Serial.println((*instance).getID());
+    // Serial.println((*instance).id);
 
     Serial.print(F("Event: "));
     (*instance).printEvent(Serial, event);
@@ -771,8 +771,8 @@ void myCallback_onEvent(slight_ButtonInput *instance, byte event) {
 /**************************************************/
 void timeMeasurement() {
     Serial.println(F("\t time Measurement (can need some time): "));
-    unsigned long ulTimeStamp = 0;
-    unsigned long ulDuration = 0;
+    uint32_t ulTimeStamp = 0;
+    uint32_t ulDuration = 0;
 
     /** **/
     uint16_t wLoopCount = 10000;
@@ -836,7 +836,7 @@ void setup() {
         // for ATmega32U4 devices:
         #if defined (__AVR_ATmega32U4__)
             // Wait for Serial Connection to be Opend from Host or 6second timeout
-            unsigned long timestamp_Start = millis();
+            uint32_t timestamp_Start = millis();
             while( (! Serial) && ( (millis() - timestamp_Start) < 6000 ) ) {
                 1;
             }
