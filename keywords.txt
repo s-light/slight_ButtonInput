@@ -21,7 +21,7 @@ getID	KEYWORD2
 getState	KEYWORD2
 printState	KEYWORD2
 printState	KEYWORD2
-getLastEvent	KEYWORD2
+getEventLast	KEYWORD2
 printEventLast	KEYWORD2
 printEvent	KEYWORD2
 

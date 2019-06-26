@@ -71,7 +71,7 @@ class slight_ButtonInput {
         typedef void (* tcbfOnEvent) (slight_ButtonInput *instance, uint8_t event);
         //typedef void (* tCbfuncStateChanged) (uint8_t id, uint8_t state);
 
-        typedef boolean (* tCbfuncGetInput) (uint8_t id, uint8_t pin);
+        typedef boolean (* tCbfuncGetInput) (slight_ButtonInput *instance);
 
         // definitions:
 
@@ -121,16 +121,13 @@ class slight_ButtonInput {
         // check if class is ready to operate.
         boolean isReady();
 
-        // get ID
-        uint8_t getID();
-
         // getState
         uint8_t getState();
         uint8_t printState(Print &out);
         uint8_t printState(Print &out, uint8_t state_ext);
 
         // event
-        uint8_t getLastEvent();
+        uint8_t getEventLast();
         uint8_t printEventLast(Print &out);
         uint8_t printEvent(Print &out, uint8_t state_temp);
 
@@ -141,15 +138,12 @@ class slight_ButtonInput {
         void enable();
         void disable();
 
-        // get Pin
-        uint8_t getPin();
-
         uint32_t getDurationActive();
 
         uint8_t getClickCount();
 
-        // ID
         const uint8_t id;
+        const uint8_t pin;
         boolean flag_filter_multi_click_events = false;
 
     private:
@@ -163,16 +157,13 @@ class slight_ButtonInput {
         uint8_t event;
         uint8_t event_last;
         const tcbfOnEvent cbfCallbackOnEvent;
+        const tCbfuncGetInput cbfuncGetInput;
 
         // other things
 
         // events enabled?
         boolean enabled;
 
-        // input pin
-        const uint8_t pin;
-        // get input state
-        const tCbfuncGetInput cbfuncGetInput;
 
         // durations
         const uint16_t duration_debounce;

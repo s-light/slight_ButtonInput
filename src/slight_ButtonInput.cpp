@@ -91,8 +91,8 @@ slight_ButtonInput::slight_ButtonInput(
     const uint16_t duration_click_double_new
 ) :
     id(id_new),
-    cbfCallbackOnEvent(cbfCallbackOnEvent_new),
     pin(pin_new),
+    cbfCallbackOnEvent(cbfCallbackOnEvent_new),
     cbfuncGetInput(cbfuncGetInput_new),
     duration_debounce(duration_debounce_new),
     duration_holddown(duration_holddown_new),
@@ -216,7 +216,7 @@ uint8_t slight_ButtonInput::printState(Print &out) {
 }
 
 
-uint8_t slight_ButtonInput::getLastEvent() {
+uint8_t slight_ButtonInput::getEventLast() {
     return event_last;
 }
 
@@ -281,10 +281,6 @@ void slight_ButtonInput::disable() {
     }
 }
 
-uint8_t slight_ButtonInput::getPin() {
-    return pin;
-}
-
 uint32_t slight_ButtonInput::getDurationActive() {
     return duration_Active;
 }
@@ -302,11 +298,11 @@ uint8_t slight_ButtonInput::getClickCount() {
 
 void slight_ButtonInput::generateEvent(uint8_t event_new) {
     event = event_new;
+    event_last = event;
     // call event
     if (event != event_NoEvent) {
-        cbfCallbackOnEvent(this, event);
+        cbfCallbackOnEvent(this);
     }
-    event_last = event;
     event = event_NoEvent;
 }
 
@@ -318,7 +314,7 @@ uint8_t slight_ButtonInput::handle_button() {
         // Serial.println(F("slight_ButtonInput::update():"));
     #endif
     // read input with callbackfunction
-    boolean input_active = cbfuncGetInput(id, pin);
+    boolean input_active = cbfuncGetInput(this);
     if (input_active == true) {
         switch (state) {
             case state_Standby:

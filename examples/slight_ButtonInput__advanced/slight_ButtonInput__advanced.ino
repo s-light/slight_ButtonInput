@@ -1,12 +1,14 @@
 /******************************************
 
-    slight_ButtonInput__minimal
+    slight_ButtonInput__advanced
         minimal example for slight_ButtonInput lib usage.
         debugport: serial interface 115200baud
 
     hardware:
-        Arduino board of any type.
+        Arduino board of any typ.
         A3 --> Pushbutton closing to GND
+        A4 --> Pushbutton closing to GND
+        A5 --> Pushbutton closing to GND
 
     libraries used:
         ~ slight_ButtonInput
@@ -59,21 +61,71 @@ bool mybutton_get_input(slight_ButtonInput *instance) {
 
 
 void mybutton_event(slight_ButtonInput *instance) {
+    Serial.print(F("instance:"));
+    Serial.print((*instance).id);
+    Serial.print(F(" - event: "));
+    (*instance).printEventLast(Serial);
+    Serial.println();
+
+    // react on event
     switch ((*instance).getEventLast()) {
+        case slight_ButtonInput::event_down : {
+            // Serial.println(F("down"));
+        } break;
+        case slight_ButtonInput::event_holddown : {
+            Serial.print(F("duration active: "));
+            Serial.println((*instance).getDurationActive());
+        } break;
+        case slight_ButtonInput::event_up : {
+            // Serial.println(F("up"));
+        } break;
         case slight_ButtonInput::event_click : {
-            Serial.println(F("click"));
+            // Serial.println(F("click"));
         } break;
         case slight_ButtonInput::event_click_long : {
-            Serial.println(F("click long"));
+            Serial.print(F("click long "));
+            Serial.println((*instance).getDurationActive());
         } break;
         case slight_ButtonInput::event_click_double : {
-            Serial.println(F("click double"));
+            // Serial.println(F("click double"));
         } break;
-    }
+        case slight_ButtonInput::event_click_triple : {
+            // Serial.println(F("click triple"));
+        } break;
+        case slight_ButtonInput::event_click_multi : {
+            Serial.print(F("click multi - count: "));
+            Serial.println((*instance).getClickCount());
+        } break;
+    } //end switch
 }
 
-// using default values:
-slight_ButtonInput mybutton1(1, A3, mybutton_get_input, mybutton_event);
+
+const uint8_t mybuttons_count = 4;
+slight_ButtonInput mybuttons[mybuttons_count] = {
+    slight_ButtonInput(0, A0, mybutton_get_input, mybutton_event),
+    slight_ButtonInput(
+        // uint8_t id_new
+        1,
+        // uint8_t pin_new,
+        A3,
+        // tCbfuncGetInput cbfuncGetInput_new,
+        mybutton_get_input,
+        // tcbfOnEvent cbfCallbackOnEvent_new,
+        mybutton_event,
+        // const uint16_t duration_debounce_new = 20,
+        10,
+        // const uint16_t duration_holddown_new = 1000,
+        1000,
+        // const uint16_t duration_click_long_new =   3000,
+        500,
+        // const uint16_t duration_click_double_new = 250
+        250
+    ),
+    // using default values:
+    slight_ButtonInput(2, A4, mybutton_get_input, mybutton_event, 1),
+    slight_ButtonInput(3, A5, mybutton_get_input, mybutton_event, 1),
+};
+
 
 // ------------------------------------------
 // setup
@@ -89,16 +141,17 @@ void setup() {
 
     // ------------------------------------------
     // print short welcome text
-    Serial.println(F("slight_ButtonInput__minimal.ino sketch."));
+    Serial.println(F("slight_ButtonInput__advanced.ino sketch."));
     Serial.println(F("minimal example for library usage."));
 
     // ------------------------------------------
     // start slight_ButtonInput
     Serial.println(F("setup slight_ButtonInput:")); {
-        Serial.println(F("  pinMode INPUT_PULLUP"));
-        pinMode(mybutton1.pin, INPUT_PULLUP);
-        Serial.println(F("  mybutton.begin();"));
-        mybutton1.begin();
+        for (size_t i = 0; i < mybuttons_count; i++) {
+            pinMode(mybuttons[i].pin, INPUT_PULLUP);
+            mybuttons[i].begin();
+            mybuttons[i].flag_filter_multi_click_events = true;
+        }
     }
     Serial.println(F("  finished."));
 
@@ -111,7 +164,9 @@ void setup() {
 // main loop
 // ------------------------------------------
 void loop() {
-    mybutton1.update();
+    for (size_t i = 0; i < mybuttons_count; i++) {
+        mybuttons[i].update();
+    }
     // nothing else to do here...
 }
 

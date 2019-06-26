@@ -628,15 +628,15 @@ boolean myInputLeft_callback_GetInput(uint8_t id, uint8_t pin) {
 }
 
 
-void mybutton_event(slight_ButtonInput *instance, uint8_t event) {
+void mybutton_event(slight_ButtonInput *instance) {
     // Serial.print(F("instance:"));
     // Serial.print((*instance).id);
     // Serial.print(F(" - event: "));
-    // (*instance).printEvent(Serial, event);
+    // (*instance).printEventLast(Serial);
     // Serial.println();
 
     // react on event
-    switch (event) {
+    switch ((*instance).getEventLast()) {
         case slight_ButtonInput::event_down : {
             // Serial.println(F("down"));
         } break;
