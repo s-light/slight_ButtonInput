@@ -50,8 +50,8 @@ https://opensource.org/licenses/mit-license.php
 ******************************************/
 
 //Check if this class is already there or if it must be created...
-#ifndef slight_ButtonInputHelper_h
-#define slight_ButtonInputHelper_h
+#ifndef slight_FIX__THROW_BAD_FUNCTION_CALL_h
+#define slight_FIX__THROW_BAD_FUNCTION_CALL_h
 
 // fix
 // undefined reference to `std::__throw_bad_function_call()'
@@ -68,6 +68,6 @@ namespace std {
 // multiple definition of `std::__throw_bad_function_call()'
 // if we move this to the main .ino file it works...
 
-#endif // ifndef slight_ButtonInputHelper_h
+#endif // ifndef slight_FIX__THROW_BAD_FUNCTION_CALL_h
 
 /** the end **/
