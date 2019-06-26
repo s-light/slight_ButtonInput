@@ -48,13 +48,20 @@ SOFTWARE.
 // NOLINTNEXTLINE(build/include)
 #include "./myinput.h"
 
+// this polluts the global namespace..
+// using namespace std::placeholders;  // for `_1`
+// so we use std::placeholders::_1
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // functions
 
 // MyInput::MyInput(Stream &out): out(out) {
 MyInput::MyInput()
 :
-    callbackOnEvent(mybutton_event)
+    callbackGetInput(
+        std::bind(&MyInput::mybutton_get_input, this, std::placeholders::_1)),
+    callbackOnEvent(
+        std::bind(&MyInput::mybutton_event, this, std::placeholders::_1))
 // NOLINTNEXTLINE(whitespace/braces)
 {
     ready = false;

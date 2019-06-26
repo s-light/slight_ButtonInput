@@ -67,12 +67,13 @@ public:
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // button
-    static boolean mybutton_get_input(slight_ButtonInput *instance);
+    boolean mybutton_get_input(slight_ButtonInput *instance);
+    slight_ButtonInput::tCallbackFunctionGetInput callbackGetInput;
     void mybutton_event(slight_ButtonInput *instance);
     slight_ButtonInput::tCallbackFunction callbackOnEvent;
 
     slight_ButtonInput mybutton = slight_ButtonInput(
-        1, A3, mybutton_get_input, callbackOnEvent);
+        1, A3, callbackGetInput, callbackOnEvent);
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // configurations

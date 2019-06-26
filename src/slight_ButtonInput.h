@@ -90,9 +90,12 @@ class slight_ButtonInput {
         // typedefs:
 
         // call back functions
-        typedef boolean (* tCallbackFunctionGetInput) (slight_ButtonInput *instance);
-        typedef void (* tCallbackFunction) (slight_ButtonInput *instance);
-        // using tCallbackFunction = std::function<void(slight_ButtonInput *instance)>;
+        // typedef boolean (* tCallbackFunctionGetInput) (slight_ButtonInput *instance);
+        using tCallbackFunctionGetInput =
+            std::function<boolean(slight_ButtonInput *instance)>;
+        // typedef void (* tCallbackFunction) (slight_ButtonInput *instance);
+        using tCallbackFunction =
+            std::function<void(slight_ButtonInput *instance)>;
 
         // definitions:
 

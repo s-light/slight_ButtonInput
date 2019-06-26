@@ -49,17 +49,7 @@ https://opensource.org/licenses/mit-license.php
 ******************************************/
 
 
-// fix
-// undefined reference to `std::__throw_bad_function_call()'
-// found at
-// https://forum.arduino.cc/index.php?topic=382211.msg2790687#msg2790687
-namespace std {
-    void __throw_bad_function_call() {
-        Serial.println(F("STL ERROR - __throw_bad_function_call"));
-    }
-}
-// but results in
-// warning: 'noreturn' function does return [enabled by default
+#include <slight_ButtonInputHelper.h>
 #include <slight_ButtonInput.h>
 
 
