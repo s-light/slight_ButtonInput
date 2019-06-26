@@ -64,22 +64,26 @@ https://opensource.org/licenses/mit-license.php
 // experiments with std:function
 // https://stackoverflow.com/questions/14189440/c-callback-using-class-member#14189561
 
-// #undef min
-// #undef max
-//
-// // tries to fix
-// // undefined reference to `std::__throw_bad_function_call()'
-// // found at
-// // https://forum.arduino.cc/index.php?topic=382211.msg2790687#msg2790687
+// fix  "error: macro "min" passed 3 arguments, but takes just 2"
+#undef min
+#undef max
+// fix
+// undefined reference to `std::__throw_bad_function_call()'
+// found at
+// https://forum.arduino.cc/index.php?topic=382211.msg2790687#msg2790687
 // namespace std {
 //     void __throw_bad_function_call() {
-//         // Serial.println(F("STL ERROR - __throw_bad_function_call"));
+//         Serial.println(F("STL ERROR - __throw_bad_function_call"));
 //     }
 // }
-//
-// #include <functional>
+// but results in
+// warning: 'noreturn' function does return [enabled by default
+// and
+// multiple definition of `std::__throw_bad_function_call()'
+// if we move this to the main .ino file it works...
 
-/** Class Definition: **/
+#include <functional>
+
 
 class slight_ButtonInput {
     public:
