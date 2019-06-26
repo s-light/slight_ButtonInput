@@ -422,7 +422,10 @@ uint8_t slight_ButtonInput::handle_post_active() {
     // of if we can generate the click event
     uint8_t state_temp = state;
     uint32_t duration_NotActive = millis() - timestamp_last_activity;
-    if (duration_NotActive > duration_click_double) {
+    if (
+        (duration_NotActive > duration_click_double)
+        || flag_filter_multi_click_events == false
+    ) {
         // generate click event
         // check for click or click_long
         if (duration_Active > duration_click_long) {

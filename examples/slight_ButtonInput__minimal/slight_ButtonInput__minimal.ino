@@ -59,11 +59,11 @@ bool mybutton_get_input(uint8_t id, uint8_t pin) {
 
 
 void mybutton_event(slight_ButtonInput *instance, uint8_t event) {
-    Serial.print(F("instance:"));
-    Serial.print((*instance).id);
-    Serial.print(F(" - event: "));
-    (*instance).printEvent(Serial, event);
-    Serial.println();
+    // Serial.print(F("instance:"));
+    // Serial.print((*instance).id);
+    // Serial.print(F(" - event: "));
+    // (*instance).printEvent(Serial, event);
+    // Serial.println();
 
     // react on event
     switch (event) {
@@ -114,9 +114,9 @@ slight_ButtonInput mybutton2(
     // const uint16_t duration_holddown_new = 1000,
     1000,
     // const uint16_t duration_click_long_new =   3000,
-    3000,
+    500,
     // const uint16_t duration_click_double_new = 250
-    150
+    250
 );
 
 // ------------------------------------------
@@ -145,6 +145,8 @@ void setup() {
         Serial.println(F("  mybutton.begin();"));
         mybutton1.begin();
         mybutton2.begin();
+        // mybutton1.flag_filter_multi_click_events = true;
+        // mybutton2.flag_filter_multi_click_events = true;
     }
     Serial.println(F("  finished."));
 

@@ -106,7 +106,7 @@ class slight_ButtonInput {
             const uint16_t duration_debounce_new = 20,
             const uint16_t duration_holddown_new = 1000,
             const uint16_t duration_click_long_new = 3000,
-            const uint16_t duration_click_double_new = 100
+            const uint16_t duration_click_double_new = 200
         );
 
 
@@ -150,6 +150,7 @@ class slight_ButtonInput {
 
         // ID
         const uint8_t id;
+        boolean flag_filter_multi_click_events = false;
 
     private:
         // flag to check if the begin function is already called and the class is ready to work.

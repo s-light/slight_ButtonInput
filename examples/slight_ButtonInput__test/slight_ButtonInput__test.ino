@@ -4,11 +4,26 @@
         test the slight_slight_ButtonInput lib.
         debugport: serial interface 115200baud
 
+
+
+
+        ATTENTION
+        this sketch does not work currently..
+        it is a lost peace of the past...
+        please use the slight_ButtonInput__minimal.ino sketch
+        as an example!!
+
+
+
+
+
+
+
     hardware:
         Arduino board of any typ.
         D9 --> LED connected to R to VCC
         A0 --> Pushbutton closing to GND
-        A1 --> Pushbutton closing to GND
+        A3 --> Pushbutton closing to GND
 
         OLIMEXINO-32U4
             on Board PushButton
@@ -138,26 +153,24 @@ void print_info(Print &out) {
     tcbfOnEvent cbfCallbackOnEvent_new,
     const uint16_t duration_debounce_new = 30,
     const uint16_t duration_holddown_new = 1000,
-    const uint16_t duration_click_single_new = 50,
     const uint16_t duration_click_long_new = 3000,
     const uint16_t duration_click_double_new = 1000
 );
 */
 slight_ButtonInput myButtonLeft(
     42,  // uint8_t id_new
-    A2,  // uint8_t pin_new,
+    A3,  // uint8_t pin_new,
     myInputLeft_callback_GetInput,  // tCbfuncGetInput cbfuncGetInput_new,
-    myCallback_onEvent,  // tcbfOnEvent cbfCallbackOnEvent_new,
+    mybutton_event,  // tcbfOnEvent cbfCallbackOnEvent_new,
       30,  // const uint16_t duration_debounce_new = 30,
     1000,  // const uint16_t duration_holddown_new = 1000,
-      50,  // const uint16_t duration_click_single_new =   50,
-    3000,  // const uint16_t duration_click_long_new =   3000,
-     500   // const uint16_t duration_click_double_new = 1000
+    500,  // const uint16_t duration_click_long_new =   3000,
+    200   // const uint16_t duration_click_double_new = 100
 );
 // using default values:
-//slight_ButtonInput myButtonLeft(42, A3, myInputLeft_callback_GetInput, myCallback_onEvent, 50, 3000);
-//slight_ButtonInput myButtonLeft(42, A4, myInputLeft_callback_GetInput, myCallback_onEvent, 50);
-//slight_ButtonInput myButtonLeft(42, A5, myInputLeft_callback_GetInput, myCallback_onEvent);
+//slight_ButtonInput myButtonLeft(42, A3, myInputLeft_callback_GetInput, mybutton_event, 50, 3000);
+//slight_ButtonInput myButtonLeft(42, A4, myInputLeft_callback_GetInput, mybutton_event, 50);
+//slight_ButtonInput myButtonLeft(42, A5, myInputLeft_callback_GetInput, mybutton_event);
 
 /******************************************/
 /** definitions (gloabl)                                                                         **/
@@ -215,106 +228,6 @@ int freeRam () {
   int v;
   return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
 }
-
-
-void printBinary8(uint8_t bIn)  {
-
-    for (unsigned int mask = 0b10000000; mask; mask >>= 1) {
-        if (mask & bIn) {
-            Serial.print('1');
-        }
-        else {
-            Serial.print('0');
-        }
-    }
-}
-
-void printBinary12(uint16_t bIn)  {
-    //                       B12345678   B12345678
-    //for (unsigned int mask = 0x8000; mask; mask >>= 1) {
-    for (unsigned int mask = 0b100000000000; mask; mask >>= 1) {
-        if (mask & bIn) {
-            Serial.print('1');
-        }
-        else {
-            Serial.print('0');
-        }
-    }
-}
-
-void printBinary16(uint16_t wIn)  {
-
-    for (unsigned int mask = 0b1000000000000000; mask; mask >>= 1) {
-        if (mask & wIn) {
-            Serial.print('1');
-        }
-        else {
-            Serial.print('0');
-        }
-    }
-}
-
-
-
-void printArray_uint8_t(uint8_t *array, uint8_t bCount) {
-    Serial.print(F(" "));
-    uint8_t bIndex = 0;
-    printAlignRight_uint8_t(array[bIndex]);
-    for(bIndex = 1; bIndex < bCount; bIndex++){
-        Serial.print(F(", "));
-        printAlignRight_uint8_t(array[bIndex]);
-    }
-}
-
-void printAlignRight_uint8_t(uint8_t bValue) {
-    //uint8_t bOffset = 0;
-    if (bValue < 100) {
-        if (bValue < 10) {
-            //bOffset = 2;
-            Serial.print(F("  "));
-        } else {
-            //bOffset = 1;
-            Serial.print(F(" "));
-        }
-    }
-    Serial.print(bValue);
-}
-
-
-void printArray_uint16_t(uint16_t *array, uint8_t bCount) {
-    Serial.print(F(" [ "));
-    uint8_t bIndex = 0;
-    printAlignRight_uint16_t(array[bIndex]);
-    for(bIndex = 1; bIndex < bCount; bIndex++){
-        Serial.print(F(", "));
-        printAlignRight_uint16_t(array[bIndex]);
-    }
-    Serial.print(F("]"));
-}
-
-uint8_t printAlignRight_uint16_t(uint16_t wValue) {
-    uint8_t bLeadingZeros = 0;
-    if (wValue < 10000) {
-        bLeadingZeros = bLeadingZeros + 1;
-        Serial.print(F(" "));
-        if (wValue < 1000) {
-            bLeadingZeros = bLeadingZeros + 1;
-            Serial.print(F(" "));
-            if (wValue < 100) {
-                bLeadingZeros = bLeadingZeros + 1;
-                Serial.print(F(" "));
-                if (wValue < 10) {
-                    bLeadingZeros = bLeadingZeros + 1;
-                    Serial.print(F(" "));
-                }
-            }
-        }
-    }
-    Serial.print(wValue);
-    return bLeadingZeros;
-}
-
-
 
 /************************************************/
 /**  Menu System                               **/
@@ -468,13 +381,12 @@ void menuSwitcher(Print &out, char *caCommand) {
 void check_newLineComplete() {
     // if SMenuCurrent is a full Line (terminated with \n) than parse things
     if (bMenu_Input_new_FlagComplete) {
-        /*
-        Serial.print(F("bMenu_Input_new_FlagComplete: sMenu_Input_new: '"));
-        Serial.print(sMenu_Input_new);
-        Serial.println(F("'"));
-        Serial.print(F("   state_UI: '"));
-        Serial.print(state_UI);
-        Serial.println(F("'"));/**/
+        // Serial.print(F("bMenu_Input_new_FlagComplete: sMenu_Input_new: '"));
+        // Serial.print(sMenu_Input_new);
+        // Serial.println(F("'"));
+        // Serial.print(F("   state_UI: '"));
+        // Serial.print(state_UI);
+        // Serial.println(F("'"));
 
         // coppy to current buffer
         strcpy (sMenu_Command_Current, sMenu_Input_new);
@@ -564,89 +476,88 @@ void commandParser(char *caCommand) {
         case 'h':
         case 'H':
         case '?': {
-                // help
-                Serial.println(F("___________________________________"));
-                Serial.println(F("Help for Serial Commands:"));
-                Serial.println(F("\t '?': this help"));
-                Serial.println(F("\t 'o': toggle DebugOut livesign Serial"));
-                Serial.println(F("\t 'O': toggle DebugOut livesign LED"));
-                Serial.println(F("\t 't': tests"));
-                Serial.println(F("\t 'e': enable  input"));
-                Serial.println(F("\t 'E': disable input"));
-                Serial.println(F("___________________________________"));
-            } break;
+            // help
+            Serial.println(F("___________________________________"));
+            Serial.println(F("Help for Serial Commands:"));
+            Serial.println(F("\t '?': this help"));
+            Serial.println(F("\t 'o': toggle DebugOut livesign Serial"));
+            Serial.println(F("\t 'O': toggle DebugOut livesign LED"));
+            Serial.println(F("\t 't': tests"));
+            Serial.println(F("\t 'e': enable  input"));
+            Serial.println(F("\t 'E': disable input"));
+            Serial.println(F("___________________________________"));
+        } break;
         case 'o': {
-                Serial.println(F("\t toggle DebugOut livesign Serial:"));
-                bDebugOut_LiveSign_Serial_Enabled = !bDebugOut_LiveSign_Serial_Enabled;
-                Serial.print(F("\t bDebugOut_LiveSign_Serial_Enabled:"));
-                Serial.println(bDebugOut_LiveSign_Serial_Enabled);
-            } break;
+            Serial.println(F("\t toggle DebugOut livesign Serial:"));
+            bDebugOut_LiveSign_Serial_Enabled = !bDebugOut_LiveSign_Serial_Enabled;
+            Serial.print(F("\t bDebugOut_LiveSign_Serial_Enabled:"));
+            Serial.println(bDebugOut_LiveSign_Serial_Enabled);
+        } break;
         case 'O': {
-                Serial.println(F("\t toggle DebugOut livesign LED:"));
-                bDebugOut_LiveSign_LED_Enabled = !bDebugOut_LiveSign_LED_Enabled;
-                Serial.print(F("\t bDebugOut_LiveSign_LED_Enabled:"));
-                Serial.println(bDebugOut_LiveSign_LED_Enabled);
-            } break;
+            Serial.println(F("\t toggle DebugOut livesign LED:"));
+            bDebugOut_LiveSign_LED_Enabled = !bDebugOut_LiveSign_LED_Enabled;
+            Serial.print(F("\t bDebugOut_LiveSign_LED_Enabled:"));
+            Serial.println(bDebugOut_LiveSign_LED_Enabled);
+        } break;
         case 't': {
-                // get state
-                Serial.println(F("___________________________________"));
-                Serial.println(F("Tests:"));
+            // get state
+            Serial.println(F("___________________________________"));
+            Serial.println(F("Tests:"));
 
-                Serial.print(F("myButtonLeft State: "));
-                //myButtonLeft.printState();
-                Serial.println();
+            Serial.print(F("myButtonLeft State: "));
+            //myButtonLeft.printState();
+            Serial.println();
 
-                //timeMeasurement();
-                //Serial.println();
+            //timeMeasurement();
+            //Serial.println();
 
-                Serial.println(F("___________________________________"));
-            } break;
+            Serial.println(F("___________________________________"));
+        } break;
         case 'e': {
-                Serial.println(F("\t enabled input."));
-                myButtonLeft.enable();
-            } break;
+            Serial.println(F("\t enabled input."));
+            myButtonLeft.enable();
+        } break;
         case 'E': {
-                Serial.println(F("\t disabled input."));
-                myButtonLeft.disable();
-            } break;
-        /*case 'r': {
-                Serial.println(F("\t Fader2 drivte to value"));
-                uint16_t wValue = atoi(&caCommand[1]);
-                Serial.print(F("\t myMFC_Fader2.driveTo("));
-                Serial.print(wValue);
-                Serial.println(F(");"));
-                myMFC_Fader2.driveTo(wValue);
-
-            } break;
-        /*case 'd': {
-                Serial.println(F("\t example for dispatching: dC:V C=channel V=value"));
-
-                //strchr(
-                //strstr(
-                //char strTemp[sizeof(caCommand)];
-                //strncpy(strTemp, caCommand[1], ptrSeparation );
-
-                uint8_t bChannel = atoi(&caCommand[1]);
-                Serial.print(F("\t bChannel:"));
-                Serial.println(bChannel);
-
-                //http://forum.arduino.cc/index.php/topic,129836.0.html
-                //char *ptrSeparation = strchr(caCommand,':');
-                //Serial.print(F("\t ptrSeparation:"));
-                //Serial.println(*ptrSeparation);
-
-                //uint8_t bValue = atoi(&caCommand[(*ptrSeparation)+1]);
-                //Serial.print(F("\t bValue:"));
-                //Serial.println(bValue);
-
-                uint8_t bValue = atoi(&caCommand[3]);
-                Serial.print(F("\t bValue:"));
-                Serial.println(bValue);
-
-                Serial.print(F("\t do something with the values."));
-
-            } break;
-        /**/
+            Serial.println(F("\t disabled input."));
+            myButtonLeft.disable();
+        } break;
+        // case 'r': {
+        //         Serial.println(F("\t Fader2 drivte to value"));
+        //         uint16_t wValue = atoi(&caCommand[1]);
+        //         Serial.print(F("\t myMFC_Fader2.driveTo("));
+        //         Serial.print(wValue);
+        //         Serial.println(F(");"));
+        //         myMFC_Fader2.driveTo(wValue);
+        //
+        // } break;
+        // case 'd': {
+        //     Serial.println(F("\t example for dispatching: dC:V C=channel V=value"));
+        //
+        //     //strchr(
+        //     //strstr(
+        //     //char strTemp[sizeof(caCommand)];
+        //     //strncpy(strTemp, caCommand[1], ptrSeparation );
+        //
+        //     uint8_t bChannel = atoi(&caCommand[1]);
+        //     Serial.print(F("\t bChannel:"));
+        //     Serial.println(bChannel);
+        //
+        //     //http://forum.arduino.cc/index.php/topic,129836.0.html
+        //     //char *ptrSeparation = strchr(caCommand,':');
+        //     //Serial.print(F("\t ptrSeparation:"));
+        //     //Serial.println(*ptrSeparation);
+        //
+        //     //uint8_t bValue = atoi(&caCommand[(*ptrSeparation)+1]);
+        //     //Serial.print(F("\t bValue:"));
+        //     //Serial.println(bValue);
+        //
+        //     uint8_t bValue = atoi(&caCommand[3]);
+        //     Serial.print(F("\t bValue:"));
+        //     Serial.println(bValue);
+        //
+        //     Serial.print(F("\t do something with the values."));
+        //
+        // } break;
         default: {
                 Serial.println(F("?? unknown command:"));
                 Serial.print(F("\t caCommand: '"));
@@ -656,9 +567,9 @@ void commandParser(char *caCommand) {
                 Serial.print(bFirstChar);
                 Serial.println(F("'"));
             }
-    } //end switch
+    }  // end switch
 
-    //end Command Parser
+    // end Command Parser
     Serial.println("__________________________________________________");
 }
 
@@ -687,9 +598,9 @@ void handle_SerialReceive() {
 
     // parse the string when a newline arrives:
     if (sSerialNewInput_bComplete) {
-        /*Serial.print(F("Received String: '"));
-        Serial.print(sSerialNewInput);
-        Serial.println(F("'"));/**/
+        // Serial.print(F("Received String: '"));
+        // Serial.print(sSerialNewInput);
+        // Serial.println(F("'"));
 
         commandParser(sSerialNewInput);
 
@@ -712,56 +623,48 @@ void handle_SerialReceive() {
 boolean myInputLeft_callback_GetInput(uint8_t id, uint8_t pin) {
     // read input invert reading - button closes to GND.
     // check HWB
-    return ! (PINE & B00000100);
-    //return ! digitalRead(pin);
+    // return ! (PINE & B00000100);
+    return ! digitalRead(pin);
 }
 
 
-void myCallback_onEvent(slight_ButtonInput *instance, uint8_t event) {
+void mybutton_event(slight_ButtonInput *instance, uint8_t event) {
+    // Serial.print(F("instance:"));
+    // Serial.print((*instance).id);
+    // Serial.print(F(" - event: "));
+    // (*instance).printEvent(Serial, event);
+    // Serial.println();
 
-    // Serial.print(F("Instance ID:"));
-    // Serial.println((*instance).id);
-
-    Serial.print(F("Event: "));
-    (*instance).printEvent(Serial, event);
-    Serial.println();
-
-    // show event additional infos:
+    // react on event
     switch (event) {
-        /*case slight_ButtonInput::event_StateChanged : {
-            Serial.print(F("\t state: "));
-            (*instance).printState(Serial);
-            Serial.println();
+        case slight_ButtonInput::event_down : {
+            // Serial.println(F("down"));
         } break;
-        // click
-        /*case slight_ButtonInput::event_down : {
-            Serial.print(F("the button is pressed down! do something.."));
-        } break;*/
         case slight_ButtonInput::event_holddown : {
             Serial.print(F("duration active: "));
             Serial.println((*instance).getDurationActive());
         } break;
-        /*case slight_ButtonInput::event_up : {
-            Serial.print(F("up"));
+        case slight_ButtonInput::event_up : {
+            // Serial.println(F("up"));
         } break;
         case slight_ButtonInput::event_click : {
-            Serial.print(F("click"));
+            Serial.println(F("click"));
         } break;
         case slight_ButtonInput::event_click_long : {
-            Serial.print(F("click long"));
+            Serial.print(F("click long "));
+            Serial.println((*instance).getDurationActive());
         } break;
         case slight_ButtonInput::event_click_double : {
-            Serial.print(F("click double"));
+            Serial.println(F("click double"));
         } break;
         case slight_ButtonInput::event_click_triple : {
-            Serial.print(F("click triple"));
-        } break;*/
+            Serial.println(F("click triple"));
+        } break;
         case slight_ButtonInput::event_click_multi : {
-            Serial.print(F("click count: "));
+            Serial.print(F("click multi - count: "));
             Serial.println((*instance).getClickCount());
         } break;
     } //end switch
-
 }
 
 
@@ -807,7 +710,7 @@ void timeMeasurement() {
 
 
 /********************************************/
-/** Setup                                                                                          **/
+// Setup
 /********************************************/
 void setup() {
 
@@ -862,9 +765,9 @@ void setup() {
         Serial.println(F("slight_ButtonInput:"));
         {
             Serial.println(F("\t pinMode INPUT_PULLUP"));
-            //pinMode(myButtonLeft.getPin(), INPUT_PULLUP);
+            pinMode(myButtonLeft.getPin(), INPUT_PULLUP);
             // Initialize the port for HWB
-            DDRE &= B11111011;
+            // DDRE &= B11111011;
 
             Serial.println(F("\t myButtonLeft.begin();"));
             myButtonLeft.begin();
