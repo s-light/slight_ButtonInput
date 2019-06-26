@@ -54,7 +54,7 @@ https://opensource.org/licenses/mit-license.php
 // ------------------------------------------
 // slight_ButtonInput things
 
-bool mybutton_get_input(slight_ButtonInput *instance) {
+boolean mybutton_get_input(slight_ButtonInput *instance) {
     // read input + invert: button closes to GND.
     return !digitalRead((*instance).pin);
 }
@@ -108,9 +108,9 @@ slight_ButtonInput mybuttons[mybuttons_count] = {
         1,
         // uint8_t pin_new,
         A3,
-        // tCbfuncGetInput cbfuncGetInput_new,
+        // tCallbackFunctionGetInput callbackGetInput_new,
         mybutton_get_input,
-        // tcbfOnEvent cbfCallbackOnEvent_new,
+        // tCallbackFunction callbackOnEvent_new,
         mybutton_event,
         // const uint16_t duration_debounce_new = 20,
         10,

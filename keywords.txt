@@ -7,8 +7,7 @@
 #######################################
 
 #Test	KEYWORD1
-tcbfOnEvent	KEYWORD1
-tCbfuncGetInput		KEYWORD1
+tCallbackFunction	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -17,9 +16,7 @@ tCbfuncGetInput		KEYWORD1
 #something	KEYWORD2
 begin	KEYWORD2
 isReady	KEYWORD2
-getID	KEYWORD2
 getState	KEYWORD2
-printState	KEYWORD2
 printState	KEYWORD2
 getEventLast	KEYWORD2
 printEventLast	KEYWORD2

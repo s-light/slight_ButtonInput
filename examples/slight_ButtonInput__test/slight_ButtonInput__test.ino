@@ -149,8 +149,8 @@ void print_info(Print &out) {
 /*slight_ButtonInput(
     uint8_t id_new,
     uint8_t pin_new,
-    tCbfuncGetInput cbfuncGetInput_new,
-    tcbfOnEvent cbfCallbackOnEvent_new,
+    tCallbackFunctionGetInput callbackGetInput_new,
+    tCallbackFunction callbackOnEvent_new,
     const uint16_t duration_debounce_new = 30,
     const uint16_t duration_holddown_new = 1000,
     const uint16_t duration_click_long_new = 3000,
@@ -160,8 +160,8 @@ void print_info(Print &out) {
 slight_ButtonInput myButtonLeft(
     42,  // uint8_t id_new
     A3,  // uint8_t pin_new,
-    myInputLeft_callback_GetInput,  // tCbfuncGetInput cbfuncGetInput_new,
-    mybutton_event,  // tcbfOnEvent cbfCallbackOnEvent_new,
+    myInputLeft_callback_GetInput,  // tCallbackFunctionGetInput callbackGetInput_new,
+    mybutton_event,  // tCallbackFunction callbackOnEvent_new,
       30,  // const uint16_t duration_debounce_new = 30,
     1000,  // const uint16_t duration_holddown_new = 1000,
     500,  // const uint16_t duration_click_long_new =   3000,

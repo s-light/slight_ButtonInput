@@ -68,10 +68,8 @@ class slight_ButtonInput {
         // typedefs:
 
         // call back functions
-        typedef void (* tcbfOnEvent) (slight_ButtonInput *instance, uint8_t event);
-        //typedef void (* tCbfuncStateChanged) (uint8_t id, uint8_t state);
-
-        typedef boolean (* tCbfuncGetInput) (slight_ButtonInput *instance);
+        typedef void (* tCallbackFunction) (slight_ButtonInput *instance);
+        typedef boolean (* tCallbackFunctionGetInput) (slight_ButtonInput *instance);
 
         // definitions:
 
@@ -101,8 +99,8 @@ class slight_ButtonInput {
         slight_ButtonInput(
             uint8_t id_new,
             uint8_t pin_new,
-            tCbfuncGetInput cbfuncGetInput_new,
-            tcbfOnEvent cbfCallbackOnEvent_new,
+            tCallbackFunctionGetInput callbackGetInput_new,
+            tCallbackFunction callbackOnEvent_new,
             const uint16_t duration_debounce_new = 20,
             const uint16_t duration_holddown_new = 1000,
             const uint16_t duration_click_long_new = 3000,
@@ -156,8 +154,8 @@ class slight_ButtonInput {
         // event
         uint8_t event;
         uint8_t event_last;
-        const tcbfOnEvent cbfCallbackOnEvent;
-        const tCbfuncGetInput cbfuncGetInput;
+        const tCallbackFunction callbackOnEvent;
+        const tCallbackFunctionGetInput callbackGetInput;
 
         // other things
 

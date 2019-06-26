@@ -83,8 +83,8 @@ https://opensource.org/licenses/mit-license.php
 slight_ButtonInput::slight_ButtonInput(
     uint8_t id_new,
     uint8_t pin_new,
-    tCbfuncGetInput cbfuncGetInput_new,
-    tcbfOnEvent cbfCallbackOnEvent_new,
+    tCallbackFunctionGetInput callbackGetInput_new,
+    tCallbackFunction callbackOnEvent_new,
     const uint16_t duration_debounce_new,
     const uint16_t duration_holddown_new,
     const uint16_t duration_click_long_new,
@@ -92,8 +92,8 @@ slight_ButtonInput::slight_ButtonInput(
 ) :
     id(id_new),
     pin(pin_new),
-    cbfCallbackOnEvent(cbfCallbackOnEvent_new),
-    cbfuncGetInput(cbfuncGetInput_new),
+    callbackOnEvent(callbackOnEvent_new),
+    callbackGetInput(callbackGetInput_new),
     duration_debounce(duration_debounce_new),
     duration_holddown(duration_holddown_new),
     duration_click_long(duration_click_long_new),
@@ -301,7 +301,7 @@ void slight_ButtonInput::generateEvent(uint8_t event_new) {
     event_last = event;
     // call event
     if (event != event_NoEvent) {
-        cbfCallbackOnEvent(this);
+        callbackOnEvent(this);
     }
     event = event_NoEvent;
 }
@@ -314,7 +314,7 @@ uint8_t slight_ButtonInput::handle_button() {
         // Serial.println(F("slight_ButtonInput::update():"));
     #endif
     // read input with callbackfunction
-    boolean input_active = cbfuncGetInput(this);
+    boolean input_active = callbackGetInput(this);
     if (input_active == true) {
         switch (state) {
             case state_Standby:
