@@ -61,6 +61,9 @@ https://opensource.org/licenses/mit-license.php
 #include <Arduino.h>
 #endif
 
+// experiments with std:function
+// https://stackoverflow.com/questions/14189440/c-callback-using-class-member#14189561
+
 // #undef min
 // #undef max
 //
