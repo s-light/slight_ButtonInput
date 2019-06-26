@@ -59,35 +59,30 @@ bool mybutton_get_input(uint8_t id, uint8_t pin) {
 
 
 void mybutton_event(slight_ButtonInput *instance, uint8_t event) {
-    Serial.print(F("Instance ID:"));
-    Serial.println((*instance).id);
-
-    Serial.print(F("Event: "));
+    Serial.print(F("instance:"));
+    Serial.print((*instance).id);
+    Serial.print(F(" - event: "));
     (*instance).printEvent(Serial, event);
     Serial.println();
 
     // react on event
     switch (event) {
-        case slight_ButtonInput::event_StateChanged : {
-            Serial.print(F("\t state: "));
-            (*instance).printState(Serial);
-            Serial.println();
-        } break;
         case slight_ButtonInput::event_down : {
-            Serial.println(F("the button is pressed down! do something.."));
+            // Serial.println(F("down"));
         } break;
         case slight_ButtonInput::event_holddown : {
             Serial.print(F("duration active: "));
             Serial.println((*instance).getDurationActive());
         } break;
         case slight_ButtonInput::event_up : {
-            Serial.println(F("up"));
+            // Serial.println(F("up"));
         } break;
         case slight_ButtonInput::event_click : {
             Serial.println(F("click"));
         } break;
         case slight_ButtonInput::event_click_long : {
-            Serial.println(F("click long"));
+            Serial.print(F("click long "));
+            Serial.println((*instance).getDurationActive());
         } break;
         case slight_ButtonInput::event_click_double : {
             Serial.println(F("click double"));
@@ -114,16 +109,14 @@ slight_ButtonInput mybutton2(
     mybutton_get_input,
     // tcbfOnEvent cbfCallbackOnEvent_new,
     mybutton_event,
-    // const uint16_t duration_debounce_new = 30,
-      30,
+    // const uint16_t duration_debounce_new = 20,
+    10,
     // const uint16_t duration_holddown_new = 1000,
     1000,
-    // const uint16_t duration_click_single_new =   50,
-      50,
     // const uint16_t duration_click_long_new =   3000,
     3000,
-    // const uint16_t duration_click_double_new = 1000
-     500
+    // const uint16_t duration_click_double_new = 250
+    150
 );
 
 // ------------------------------------------

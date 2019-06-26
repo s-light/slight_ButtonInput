@@ -87,7 +87,6 @@ slight_ButtonInput::slight_ButtonInput(
     tcbfOnEvent cbfCallbackOnEvent_new,
     const uint16_t duration_debounce_new,
     const uint16_t duration_holddown_new,
-    const uint16_t duration_click_single_new,
     const uint16_t duration_click_long_new,
     const uint16_t duration_click_double_new
 ) :
@@ -97,21 +96,20 @@ slight_ButtonInput::slight_ButtonInput(
     cbfuncGetInput(cbfuncGetInput_new),
     duration_debounce(duration_debounce_new),
     duration_holddown(duration_holddown_new),
-    duration_click_single(duration_click_single_new),
     duration_click_long(duration_click_long_new),
     duration_click_double(duration_click_double_new)
 // NOLINTNEXTLINE(whitespace/braces)
 {
     // do some internal inits
 
-    timestamp_last_activity        = 0;
-    timestamp_last_release            = 0;
-    timestamp_last_holddown_event    = 0;
+    timestamp_last_activity = 0;
+    timestamp_last_release = 0;
+    timestamp_last_holddown_event = 0;
 
     click_count = 0;
 
-    event        = event_NoEvent;
-    event_last    = event_NoEvent;
+    event = event_NoEvent;
+    event_last = event_NoEvent;
 
     enabled = false;
 
@@ -134,16 +132,16 @@ void slight_ButtonInput::begin() {
             Serial.println(F("slight_ButtonInput::begin: "));
         #endif
 
-        timestamp_last_activity        = millis();
-        timestamp_last_release            = millis();
-        timestamp_last_holddown_event    = millis();
+        timestamp_last_activity = millis();
+        timestamp_last_release = millis();
+        timestamp_last_holddown_event = millis();
 
-        event        = event_NoEvent;
-        event_last    = event_NoEvent;
-        state        = state_Standby;
-        enabled    = true;
+        event = event_NoEvent;
+        event_last = event_NoEvent;
+        state = state_Standby;
+        enabled = true;
 
-        ready        = true;
+        ready = true;
     }
 }
 
@@ -160,27 +158,7 @@ uint8_t slight_ButtonInput::update() {
     if (ready == true) {
         // if system is enabled
         if (enabled == true) {
-            #ifdef debug_slight_ButtonInput
-                // Serial.println(F("slight_ButtonInput::update():"));
-            #endif
-
-            // read input with callbackfunction
-            boolean bInputRawActive = cbfuncGetInput(id, pin);
-
-            if (bInputRawActive == true) {
-                if ( state == state_Standby ) {
-                    state_temp = handle_start_debouncing();
-                } else {
-                    state_temp = handle_active();
-                }
-            } else if ((bInputRawActive == false) && (state == state_Active)) {
-                // Button Released
-                state_temp = handle_button_released();
-            } else {  // means bInputRawActive==false
-                // system is in standby waiting for the next button press.
-                state_temp = state_Standby;
-            }  // end if (bInputRawActive == true) else
-
+            state_temp = handle_button();
         } else {
             // system is disabled -nothing to do - so its Standby.
             state_temp = state_Standby;
@@ -214,11 +192,14 @@ uint8_t slight_ButtonInput::printState(Print &out, uint8_t state_temp) {
         case slight_ButtonInput::state_NotValid : {
             out.print(F("NotValid"));
         } break;
+        case slight_ButtonInput::state_Debouncing : {
+            out.print(F("debouncing"));
+        } break;
         case slight_ButtonInput::state_Active : {
             out.print(F("active"));
         } break;
-        case slight_ButtonInput::state_Debouncing : {
-            out.print(F("debouncing"));
+        case slight_ButtonInput::state_PostActive : {
+            out.print(F("post active"));
         } break;
         default: {
             out.print(F("error: '"));
@@ -330,34 +311,45 @@ void slight_ButtonInput::generateEvent(uint8_t event_new) {
 }
 
 
-uint8_t slight_ButtonInput::handle_active() {
+
+uint8_t slight_ButtonInput::handle_button() {
     uint8_t state_temp = state_NotValid;
-    // system is debouncing or active
-    // so new default state is current state
-    state_temp = state;
-
-    // calc duration
-    uint32_t ulLastDuration =
-        (millis() - timestamp_last_activity);
-
-    // check state:
-    if (
-        (state == state_Debouncing) &&
-        (ulLastDuration > duration_debounce)
-    ) {
-        // set system to 'active'
-        timestamp_last_activity = millis();
-        timestamp_last_holddown_event = millis();
-        state_temp = state_Active;
-        generateEvent(event_down);
-    } else if (state == state_Active) {
-        // check for HoldingDown event
-        duration_Active = ulLastDuration;
-        uint32_t ulActiveDuration =
-            millis() - timestamp_last_holddown_event;
-        if (ulActiveDuration > duration_holddown) {
-            timestamp_last_holddown_event = millis();
-            generateEvent(event_holddown);
+    #ifdef debug_slight_ButtonInput
+        // Serial.println(F("slight_ButtonInput::update():"));
+    #endif
+    // read input with callbackfunction
+    boolean input_active = cbfuncGetInput(id, pin);
+    if (input_active == true) {
+        switch (state) {
+            case state_Standby:
+            case state_PostActive: {
+                state_temp = handle_start_debouncing();
+            } break;
+            case state_Debouncing: {
+                state_temp = handle_debouncing();
+            } break;
+            case state_Active: {
+                state_temp = handle_active();
+            } break;
+            // default: {
+            //     // should never happen..
+            //     // system is in standby waiting for the next button press.
+            //     state_temp = state_Standby;
+            // }
+        }
+    } else {  // input_active == false
+        switch (state) {
+            case state_Active: {
+                state_temp = handle_button_released();
+            } break;
+            case state_PostActive: {
+                state_temp = handle_post_active();
+            } break;
+            default: {
+                // soemthing went wrong...
+                // it should be safe to go back to standby
+                state_temp = state_Standby;
+            }
         }
     }
     return state_temp;
@@ -378,47 +370,80 @@ uint8_t slight_ButtonInput::handle_start_debouncing() {
     return state_temp;
 }
 
-uint8_t slight_ButtonInput::handle_button_released() {
+uint8_t slight_ButtonInput::handle_debouncing() {
     uint8_t state_temp = state_NotValid;
+    // calc duration
+    uint32_t last_duration = millis() - timestamp_last_activity;
+    if (last_duration > duration_debounce) {
+        // set system to 'active'
+        timestamp_last_activity = millis();
+        timestamp_last_holddown_event = millis();
+        state_temp = state_Active;
+        generateEvent(event_down);
+    } else {
+        // waiting..
+        state_temp = state_Debouncing;
+    }
+    return state_temp;
+}
+
+uint8_t slight_ButtonInput::handle_active() {
+    // update internal duration_Active variable
     duration_Active = (millis() - timestamp_last_activity);
-    // state_temp = state_Released;
+    // check for HoldingDown event
+    uint32_t temp_duration_active = millis() - timestamp_last_holddown_event;
+    if (temp_duration_active > duration_holddown) {
+        timestamp_last_holddown_event = millis();
+        generateEvent(event_holddown);
+    }
+    return state_Active;
+}
+
+uint8_t slight_ButtonInput::handle_button_released() {
+    duration_Active = (millis() - timestamp_last_activity);
     generateEvent(event_up);
-    state_temp = state_Standby;
-
-    //////////////////////////////////////////
-    // generate Click event
-    // check which event to generate
-    // [click, click_long, click_double, click_triple]
-
     // check if DoubleClick Time is not over
-    uint32_t ulLastReleaseDuration = millis() - timestamp_last_release;
-    if (ulLastReleaseDuration < duration_click_double) {
+    uint32_t last_release_duration = millis() - timestamp_last_release;
+    if (last_release_duration < duration_click_double) {
         // ClickMulti detected
-            click_count = click_count + 1;
-        // check for ClickCount:
-        if (click_count == 2) {
-            generateEvent(event_click_double);
-        } else if (click_count == 3) {
-            generateEvent(event_click_triple);
-        } else if (click_count > 3) {
-            generateEvent(event_click_multi);
-        }
+        click_count = click_count + 1;
     } else {
         // reset ClickMulti
-            click_count = 1;
-        // check for Click or ClickLong
+        click_count = 1;
+    }
+    timestamp_last_release = millis();
+    timestamp_last_activity = millis();
+    timestamp_last_holddown_event = millis();
+    return state_PostActive;
+}
+
+uint8_t slight_ButtonInput::handle_post_active() {
+    // waiting if another chained click is comming..
+    // of if we can generate the click event
+    uint8_t state_temp = state;
+    uint32_t duration_NotActive = millis() - timestamp_last_activity;
+    if (duration_NotActive > duration_click_double) {
+        // generate click event
+        // check for click or click_long
         if (duration_Active > duration_click_long) {
             generateEvent(event_click_long);
         } else {
-            generateEvent(event_click);
+            // check for click_count:
+            if (click_count == 1) {
+                generateEvent(event_click);
+            } else if (click_count == 2) {
+                generateEvent(event_click_double);
+            } else if (click_count == 3) {
+                generateEvent(event_click_triple);
+            } else if (click_count > 3) {
+                generateEvent(event_click_multi);
+            }
         }
+        state_temp = state_Standby;
+        timestamp_last_activity = millis();
+    } else {
+        // waiting...
     }
-    //////////////////////////////////////////
-
-    // reset system
-    timestamp_last_release    = millis();
-    timestamp_last_activity = millis();
-    timestamp_last_holddown_event = millis();
     return state_temp;
 }
 

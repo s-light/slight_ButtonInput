@@ -83,8 +83,9 @@ class slight_ButtonInput {
 
         static const uint8_t state_NotValid = 11;
         static const uint8_t state_Standby = 12;
-        static const uint8_t state_Active = 13;
-        static const uint8_t state_Debouncing = 14;
+        static const uint8_t state_Debouncing = 13;
+        static const uint8_t state_Active = 14;
+        static const uint8_t state_PostActive = 15;
 
         // Click
         static const uint8_t event_down = 20;
@@ -102,11 +103,10 @@ class slight_ButtonInput {
             uint8_t pin_new,
             tCbfuncGetInput cbfuncGetInput_new,
             tcbfOnEvent cbfCallbackOnEvent_new,
-            const uint16_t duration_debounce_new = 30,
+            const uint16_t duration_debounce_new = 20,
             const uint16_t duration_holddown_new = 1000,
-            const uint16_t duration_click_single_new = 50,
             const uint16_t duration_click_long_new = 3000,
-            const uint16_t duration_click_double_new = 250
+            const uint16_t duration_click_double_new = 100
         );
 
 
@@ -176,7 +176,6 @@ class slight_ButtonInput {
         // durations
         const uint16_t duration_debounce;
         const uint16_t duration_holddown;
-        const uint16_t duration_click_single;
         const uint16_t duration_click_long;
         const uint16_t duration_click_double;
 
@@ -191,9 +190,13 @@ class slight_ButtonInput {
         uint8_t click_count;
 
         void generateEvent(uint8_t event_new);
+
+        uint8_t handle_button();
         uint8_t handle_start_debouncing();
+        uint8_t handle_debouncing();
         uint8_t handle_active();
         uint8_t handle_button_released();
+        uint8_t handle_post_active();
 };
 
 #endif // ifndef slight_ButtonInput_h
