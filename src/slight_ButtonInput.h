@@ -175,11 +175,8 @@ class slight_ButtonInput {
         const tCallbackFunction callbackOnEvent;
         const tCallbackFunctionGetInput callbackGetInput;
 
-        // other things
-
         // events enabled?
         boolean enabled;
-
 
         // durations
         const uint16_t duration_debounce;
@@ -192,9 +189,7 @@ class slight_ButtonInput {
         uint32_t timestamp_last_release;
         uint32_t timestamp_last_holddown_event;
 
-        //
         uint32_t duration_Active;
-
         uint8_t click_count;
 
         void generateEvent(uint8_t event_new);
@@ -209,4 +204,4 @@ class slight_ButtonInput {
 
 #endif // ifndef slight_ButtonInput_h
 
-/** the end **/
+// the end
