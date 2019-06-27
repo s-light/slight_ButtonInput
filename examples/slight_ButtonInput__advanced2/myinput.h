@@ -71,11 +71,24 @@ public:
     void mybutton_event(slight_ButtonInput *instance);
 
     slight_ButtonInput mybutton = slight_ButtonInput(
-        55,
+        // uint8_t id_new
+        1,
+        // uint8_t pin_new,
         A3,
+        // tCallbackFunctionGetInput callbackGetInput_new,
         std::bind(&MyInput::mybutton_get_input, this, std::placeholders::_1),
-        std::bind(&MyInput::mybutton_event, this, std::placeholders::_1)
+        // tCallbackFunction callbackOnEvent_new,
+        std::bind(&MyInput::mybutton_event, this, std::placeholders::_1),
+        // const uint16_t duration_debounce_new = 20,
+        10,
+        // const uint16_t duration_holddown_new = 1000,
+        1000,
+        // const uint16_t duration_click_long_new =   3000,
+        500,
+        // const uint16_t duration_click_double_new = 250
+        250
     );
+
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // configurations
