@@ -68,12 +68,14 @@ public:
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // button
     boolean mybutton_get_input(slight_ButtonInput *instance);
-    slight_ButtonInput::tCallbackFunctionGetInput callbackGetInput;
     void mybutton_event(slight_ButtonInput *instance);
-    slight_ButtonInput::tCallbackFunction callbackOnEvent;
 
     slight_ButtonInput mybutton = slight_ButtonInput(
-        55, A3, callbackGetInput, callbackOnEvent);
+        55,
+        A3,
+        std::bind(&MyInput::mybutton_get_input, this, std::placeholders::_1),
+        std::bind(&MyInput::mybutton_event, this, std::placeholders::_1)
+    );
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // configurations
