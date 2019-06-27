@@ -54,7 +54,7 @@ https://opensource.org/licenses/mit-license.php
 #define slight_ButtonInput_h
 
 
-/** Includes Core Arduino functionality **/
+// Includes Core Arduino functionality
 #if ARDUINO < 100
 #include <WProgram.h>
 #else
@@ -121,6 +121,11 @@ class slight_ButtonInput {
         static const uint8_t event_click_triple = 33;
         static const uint8_t event_click_multi = 34;
 
+
+        const uint8_t id;
+        const uint8_t pin;
+        boolean flag_filter_multi_click_events = false;
+
         //Constructor
         slight_ButtonInput(
             uint8_t id_new,
@@ -132,20 +137,12 @@ class slight_ButtonInput {
             const uint16_t duration_click_long_new = 3000,
             const uint16_t duration_click_double_new = 200
         );
-
-
-
-        //Destructor
         ~slight_ButtonInput();
 
-
-        // initialize class
         void begin();
-
-        // check if class is ready to operate.
         boolean isReady();
 
-        // getState
+        // state
         uint8_t getState();
         uint8_t printState(Print &out);
         uint8_t printState(Print &out, uint8_t state_ext);
@@ -163,12 +160,7 @@ class slight_ButtonInput {
         void disable();
 
         uint32_t getDurationActive();
-
         uint8_t getClickCount();
-
-        const uint8_t id;
-        const uint8_t pin;
-        boolean flag_filter_multi_click_events = false;
 
     private:
         // flag to check if the begin function is already called and the class is ready to work.
