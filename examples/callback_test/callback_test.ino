@@ -4,24 +4,33 @@
 // experiments with std:function
 // https://stackoverflow.com/questions/14189440/c-callback-using-class-member#14189561
 
-// fix  "error: macro "min" passed 3 arguments, but takes just 2"
-#undef min
-#undef max
 
-// this tries to fix
-// undefined reference to `std::__throw_bad_function_call()'
-// found at
-// https://forum.arduino.cc/index.php?topic=382211.msg2790687#msg2790687
-namespace std {
-    void __throw_bad_function_call() {
-        Serial.println(F("STL ERROR - __throw_bad_function_call"));
+#if defined(ARDUINO_ARCH_SAMD)
+    // fix  "error: macro "min" passed 3 arguments, but takes just 2"
+    #undef min
+    #undef max
+    // fix
+    // undefined reference to `std::__throw_bad_function_call()'
+    // found at
+    // https://forum.arduino.cc/index.php?topic=382211.msg2790687#msg2790687
+    namespace std {
+        void __throw_bad_function_call() {
+            Serial.println(F("STL ERROR - __throw_bad_function_call"));
+        }
     }
-}
+    #include <functional>
+#else
+    #error “This library currently only supports boards with an AVR or SAMD processor.”
+#endif
 
-#include <functional>
 
 
-using tCallbackFunction = std::function<void(uint8_t)>;
+#if defined(ARDUINO_ARCH_AVR)
+  using tCallbackFunction =  void (*)(uint8_t);
+  // using tCallbackFunction = std::function<void(uint8_t)>;
+#elif defined(ARDUINO_ARCH_SAMD)
+    using tCallbackFunction = std::function<void(uint8_t)>;
+#endif
 
 tCallbackFunction callmeifyoucan;
 
