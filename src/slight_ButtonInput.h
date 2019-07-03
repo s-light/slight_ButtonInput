@@ -65,7 +65,7 @@ https://opensource.org/licenses/mit-license.php
 // https://stackoverflow.com/questions/14189440/c-callback-using-class-member#14189561
 // more on this topic at
 // https://github.com/arduino/ArduinoCore-avr/pull/58
-#if defined(ARDUINO_ARCH_SAMD)
+#if defined(ARDUINO_ARCH_SAMD) || defined(ARDUINO_ARCH_ESP32)
     // fix  "error: macro "min" passed 3 arguments, but takes just 2"
     #undef min
     #undef max
@@ -98,7 +98,7 @@ class slight_ButtonInput {
                 boolean (*)(slight_ButtonInput *instance);
             using tCallbackFunction =
                 void (*)(slight_ButtonInput *instance);
-        #elif defined(ARDUINO_ARCH_SAMD)
+        #elif defined(ARDUINO_ARCH_SAMD) || defined(ARDUINO_ARCH_ESP32)
             // using tCallbackFunction = std::function<void(uint8_t)>;
             using tCallbackFunctionGetInput =
                 std::function<boolean(slight_ButtonInput *instance)>;
