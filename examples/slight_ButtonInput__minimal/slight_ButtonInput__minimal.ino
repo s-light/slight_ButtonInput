@@ -53,7 +53,7 @@ https://opensource.org/licenses/mit-license.php
 // ------------------------------------------
 // slight_ButtonInput things
 
-boolean mybutton_get_input(slight_ButtonInput *instance) {
+bool mybutton_get_input(slight_ButtonInput *instance) {
     // read input + invert: button closes to GND.
     return !digitalRead((*instance).pin);
 }
@@ -75,6 +75,7 @@ void mybutton_event(slight_ButtonInput *instance) {
 
 // using default values:
 slight_ButtonInput mybutton1(1, A3, mybutton_get_input, mybutton_event);
+
 
 // ------------------------------------------
 // setup
