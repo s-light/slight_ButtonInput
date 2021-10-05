@@ -64,6 +64,10 @@ https://opensource.org/licenses/mit-license.php
     namespace std {
         void __throw_bad_function_call() {
             Serial.println(F("STL ERROR - __throw_bad_function_call"));
+            // end in an infininty loop
+            // this way this function really does not return.
+            // source: https://stackoverflow.com/a/15964365/574981
+            while(1);
         }
     }
     // but results in
