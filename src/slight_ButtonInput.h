@@ -105,7 +105,7 @@ class slight_ButtonInput {
             using tCallbackFunction =
                 std::function<void(slight_ButtonInput *instance)>;
         #else
-            #error “Not implemented yet. please create a pull-request :-)”
+            #error Not implemented yet. please create a pull-request :-)
         #endif
 
 
