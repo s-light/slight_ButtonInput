@@ -8,9 +8,10 @@
 /******************************************
 license
 
+Copyright 2019 Stefan Krueger
+
 ------------------------------------------
 Apache License Version 2.0
-Copyright 2019 Stefan Krueger
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -26,8 +27,6 @@ limitations under the License.
 
 ------------------------------------------
 The MIT License (MIT)
-
-Copyright (c) 2019 Stefan Krüger
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
